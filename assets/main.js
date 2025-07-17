@@ -4,16 +4,23 @@ function formatCurrency(number) {
   return Number(number).toLocaleString("vi-VN");
 }
 
+// Tải danh sách giao dịch từ server
 async function fetchTransactions() {
-  const response = await fetch("http://localhost:3000/api/transactions");
-  const transactions = await response.json();
-  renderTable(transactions);
+  try {
+    const response = await fetch("http://localhost:8050/api/transactions");
+    const transactions = await response.json();
+    renderTable(transactions);
+  } catch (error) {
+    console.error("Không thể kết nối server:", error);
+    alert("Không thể kết nối tới server.");
+  }
 }
 
+// Hiển thị bảng dữ liệu
 function renderTable(transactions) {
   const tableBody = document.getElementById("transactionTable").getElementsByTagName("tbody")[0];
 
-  // Xóa tất cả hàng, trừ dòng "TỒN ĐẦU"
+  // Xóa tất cả hàng sau dòng "TỒN ĐẦU"
   while (tableBody.rows.length > 1) {
     tableBody.deleteRow(1);
   }
@@ -22,24 +29,26 @@ function renderTable(transactions) {
   transactions.forEach((t) => {
     const row = tableBody.insertRow(-1);
     const amount = parseFloat(t.amount);
+    const formattedDate = t.date.slice(0, 10); // yyyy-mm-dd
 
     balance += t.category === "Thu" ? amount : -amount;
 
     row.innerHTML = `
-      <td>${t.date}</td>
+      <td>${formattedDate}</td>
       <td>${t.name}</td>
       <td>${t.type}</td>
       <td class="currency">${formatCurrency(amount)}</td>
       <td>${t.category}</td>
       <td class="currency">${formatCurrency(balance)}</td>
       <td>${t.note || ""}</td>
-      <td><!-- Xóa có thể bổ sung sau --></td>
+      <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
     `;
   });
 
   document.getElementById("startingBalance").innerText = formatCurrency(0);
 }
 
+// Gửi dữ liệu lên server khi bấm "Thêm"
 async function addRow() {
   const date = document.getElementById("dateInput").value;
   const name = document.getElementById("nameInput").value;
@@ -58,11 +67,11 @@ async function addRow() {
     type,
     amount,
     category,
-    note: "", // có thể bổ sung input ghi chú sau
+    note: "", // bạn có thể thêm input ghi chú nếu muốn
   };
 
   try {
-    const response = await fetch("http://localhost:3000/api/transactions", {
+    const response = await fetch("http://localhost:8050/api/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +80,7 @@ async function addRow() {
     });
 
     if (response.ok) {
-      await fetchTransactions(); // tải lại sau khi thêm
+      await fetchTransactions(); // cập nhật lại bảng
       clearInputs();
     } else {
       alert("Lỗi khi thêm giao dịch.");
@@ -82,6 +91,27 @@ async function addRow() {
   }
 }
 
+// Gọi API xóa giao dịch
+async function deleteTransaction(id) {
+  if (!confirm("Bạn có chắc chắn muốn xóa dòng này?")) return;
+
+  try {
+    const response = await fetch(`http://localhost:8050/api/transactions/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      await fetchTransactions();
+    } else {
+      alert("Xóa không thành công.");
+    }
+  } catch (error) {
+    console.error("Lỗi khi xóa:", error);
+    alert("Không thể kết nối tới server để xóa.");
+  }
+}
+
+// Xóa dữ liệu trên form
 function clearInputs() {
   document.getElementById("dateInput").value = "";
   document.getElementById("nameInput").value = "Phượng";
@@ -90,5 +120,16 @@ function clearInputs() {
   document.getElementById("categoryInput").value = "Thu";
 }
 
-// Tự động tải dữ liệu khi trang load
+// Tự động tải lại khi trang được mở
 window.onload = fetchTransactions;
+
+// Xuất Excel
+function exportToExcel() {
+  const table = document.getElementById("transactionTable");
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.table_to_sheet(table);
+  XLSX.utils.book_append_sheet(wb, ws, "GiaoDich");
+
+  const now = new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(wb, `GiaoDich_${now}.xlsx`);
+}

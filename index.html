@@ -6,6 +6,7 @@
     <title>Theo dõi thu chi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   </head>
   <body>
     <h2>THEO DÕI THU CHI</h2>
@@ -14,7 +15,7 @@
       <label for="dateInput">Ngày:</label>
       <input type="date" id="dateInput" lang="vi" />
 
-      <label for="nameInput">Họ và tên:</label>
+      <label for="nameInput">Người nộp:</label>
       <select id="nameInput">
         <option value="Phượng">Phượng</option>
         <option value="Chị Thiện">Chị Thiện</option>
@@ -35,13 +36,14 @@
 
       <button onclick="addRow()">Thêm</button>
       <button class="clear-button" onclick="clearInputs()">Đặt lại</button>
+      <button onclick="exportToExcel()">Xuất Excel</button>
     </div>
 
     <table id="transactionTable">
       <thead>
         <tr>
           <th>Ngày</th>
-          <th>Họ và tên</th>
+          <th>Người nộp</th>
           <th>Loại giao dịch</th>
           <th>Số tiền</th>
           <th>Thu / Chi</th>
