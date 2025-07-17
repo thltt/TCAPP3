@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(to right, #e0f7fa, #fff0f6);
+  margin: 0;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  color: #c2185b;
+  margin-bottom: 30px;
+}
+
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.input-row label {
+  min-width: 80px;
+  font-weight: 600;
+}
+
+input,
+select,
+button {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input[type="date"] {
+  font-family: "Inter", sans-serif;
+}
+
+button {
+  background-color: #d63384;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #ad1457;
+}
+
+.clear-button {
+  background-color: #0077b6;
+}
+
+.clear-button:hover {
+  background-color: #005f87;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+th,
+td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #b2ebf2;
+  color: #333;
+  font-weight: 600;
+}
+
+.start-row td {
+  text-align: right;
+  font-weight: bold;
+  background-color: #e0f7fa;
+}
+
+.currency {
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-row label {
+    text-align: left;
+    margin-top: 8px;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+  }
+}

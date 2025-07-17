@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Theo dõi thu chi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+  <body>
+    <h2>THEO DÕI THU CHI</h2>
+
+    <div class="input-row">
+      <label for="dateInput">Ngày:</label>
+      <input type="date" id="dateInput" lang="vi" />
+
+      <label for="nameInput">Họ và tên:</label>
+      <select id="nameInput">
+        <option value="Phượng">Phượng</option>
+        <option value="Chị Thiện">Chị Thiện</option>
+        <option value="Em Đại">Em Đại</option>
+      </select>
+
+      <label for="typeInput">Giao dịch:</label>
+      <input type="text" id="typeInput" />
+
+      <label for="amountInput">Số tiền:</label>
+      <input type="number" id="amountInput" />
+
+      <label for="categoryInput">Loại:</label>
+      <select id="categoryInput">
+        <option value="Thu">Thu</option>
+        <option value="Chi">Chi</option>
+      </select>
+
+      <button onclick="addRow()">Thêm</button>
+      <button class="clear-button" onclick="clearInputs()">Đặt lại</button>
+    </div>
+
+    <table id="transactionTable">
+      <thead>
+        <tr>
+          <th>Ngày</th>
+          <th>Họ và tên</th>
+          <th>Loại giao dịch</th>
+          <th>Số tiền</th>
+          <th>Thu / Chi</th>
+          <th>Số dư còn lại</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="start-row">
+          <td colspan="5">TỒN ĐẦU</td>
+          <td class="currency" id="startingBalance">0</td>
+          <td colspan="2"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script src="./assets/main.js"></script>
+  </body>
+</html>
