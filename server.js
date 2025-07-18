@@ -2,20 +2,21 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+require("dotenv").config();
 
 const app = express();
-const port = 8050;
+const port = process.env.PORT || 8050;
 
 app.use(cors());
 app.use(bodyParser.json());
 
 // Kết nối database
 const db = mysql.createConnection({
-  port: 3308,
-  host: "localhost",
-  user: "root",
-  password: "123456",
-  database: "thuchi",
+  port: process.env.DB_PORT || 3308,
+  host: process.env.DB_HOST_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 db.connect((err) => {
