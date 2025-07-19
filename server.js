@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 // Kết nối database
 const db = mysql.createConnection({
-  port: process.env.MYSQL_ADDON_PORT || 3308,
+  port: process.env.MYSQL_ADDON_PORT || 3306,
   host: process.env.MYSQL_ADDON_HOST,
   user: process.env.MYSQL_ADDON_USER,
   password: process.env.MYSQL_ADDON_PASSWORD,
@@ -22,6 +22,26 @@ const db = mysql.createConnection({
 db.connect((err) => {
   if (err) throw err;
   console.log("✅ Đã kết nối MySQL!");
+});
+
+const createTableIfNotExists = `
+CREATE TABLE IF NOT EXISTS transactions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  date DATE NOT NULL,
+  name VARCHAR(255),
+  type VARCHAR(50),
+  amount DECIMAL(15,2) NOT NULL,
+  category VARCHAR(50),
+  note TEXT
+);
+`;
+
+db.query(createTableIfNotExists, (err) => {
+  if (err) {
+    console.error("Lỗi tạo bảng:", err);
+  } else {
+    console.log("✅ Bảng transactions đã sẵn sàng.");
+  }
 });
 
 // API thêm giao dịch

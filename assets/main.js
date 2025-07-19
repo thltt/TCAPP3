@@ -7,7 +7,7 @@ function formatCurrency(number) {
 // Tải danh sách giao dịch từ server
 async function fetchTransactions() {
   try {
-    const response = await fetch("http://localhost:8050/api/transactions");
+    const response = await fetch("https://tcapp2.onrender.com/api/transactions");
     const transactions = await response.json();
     renderTable(transactions);
   } catch (error) {
@@ -71,7 +71,7 @@ async function addRow() {
   };
 
   try {
-    const response = await fetch("http://localhost:8050/api/transactions", {
+    const response = await fetch("https://tcapp2.onrender.com/api/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +96,7 @@ async function deleteTransaction(id) {
   if (!confirm("Bạn có chắc chắn muốn xóa dòng này?")) return;
 
   try {
-    const response = await fetch(`http://localhost:8050/api/transactions/${id}`, {
+    const response = await fetch(`https://tcapp2.onrender.com/api/transactions/${id}`, {
       method: "DELETE",
     });
 
