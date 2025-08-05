@@ -10,21 +10,30 @@ const port = process.env.PORT || 8050;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Kết nối database
-const db = mysql.createConnection({
+// Tạo connection pool thay vì single connection
+const pool = mysql.createPool({
   port: process.env.MYSQL_ADDON_PORT || 3306,
   host: process.env.MYSQL_ADDON_HOST,
   user: process.env.MYSQL_ADDON_USER,
   password: process.env.MYSQL_ADDON_PASSWORD,
   database: process.env.MYSQL_ADDON_DB,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-db.connect((err) => {
-  if (err) throw err;
-  console.log("✅ Đã kết nối MySQL!");
+// Kiểm tra kết nối
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error("❌ Lỗi kết nối MySQL:", err);
+    process.exit(1);
+  }
+  console.log("✅ Đã kết nối MySQL qua pool!");
+  connection.release();
 });
 
-const createTableIfNotExists = `
+// Tạo bảng nếu chưa có
+const createTable = `
 CREATE TABLE IF NOT EXISTS transactions (
   id INT PRIMARY KEY AUTO_INCREMENT,
   date DATE NOT NULL,
@@ -36,50 +45,57 @@ CREATE TABLE IF NOT EXISTS transactions (
 );
 `;
 
-db.query(createTableIfNotExists, (err) => {
-  if (err) {
-    console.error("Lỗi tạo bảng:", err);
-  } else {
-    console.log("✅ Bảng transactions đã sẵn sàng.");
-  }
+pool.query(createTable, (err) => {
+  if (err) console.error("❌ Lỗi tạo bảng:", err);
+  else console.log("✅ Bảng transactions đã sẵn sàng.");
 });
 
 // API thêm giao dịch
 app.post("/api/transactions", (req, res) => {
   const { date, name, type, amount, category, note } = req.body;
-  const sql = "INSERT INTO transactions (date, name, type, amount, category, note) VALUES (?, ?, ?, ?, ?, ?)";
-  db.query(sql, [date, name, type, amount, category, note], (err, result) => {
+  const sql = `INSERT INTO transactions (date, name, type, amount, category, note) 
+               VALUES (?, ?, ?, ?, ?, ?)`;
+  pool.query(sql, [date, name, type, amount, category, note], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     res.json({ id: result.insertId });
   });
 });
 
-// API lấy toàn bộ giao dịch
+// API lấy giao dịch (có phân trang)
 app.get("/api/transactions", (req, res) => {
-  db.query("SELECT * FROM transactions ORDER BY date", (err, rows) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 50;
+  const offset = (page - 1) * limit;
+
+  const sql = "SELECT * FROM transactions ORDER BY date DESC LIMIT ? OFFSET ?";
+  pool.query(sql, [limit, offset], (err, rows) => {
     if (err) return res.status(500).json({ error: err });
     res.json(rows);
   });
 });
 
-// XÓA một giao dịch theo ID
-app.delete("/api/transactions/:id", async (req, res) => {
+// API đếm tổng số giao dịch (hỗ trợ phân trang client)
+app.get("/api/transactions/count", (req, res) => {
+  pool.query("SELECT COUNT(*) as total FROM transactions", (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json({ total: result[0].total });
+  });
+});
+
+// API xóa giao dịch
+app.delete("/api/transactions/:id", (req, res) => {
   const id = req.params.id;
-
-  try {
-    const [result] = await db.promise().execute("DELETE FROM transactions WHERE id = ?", [id]);
-
+  pool.query("DELETE FROM transactions WHERE id = ?", [id], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
     if (result.affectedRows === 0) {
       res.status(404).json({ message: "Không tìm thấy giao dịch để xóa." });
     } else {
       res.json({ message: "Đã xóa thành công." });
     }
-  } catch (error) {
-    console.error("Lỗi khi xóa giao dịch:", error);
-    res.status(500).json({ error: "Lỗi server khi xóa giao dịch." });
-  }
+  });
 });
 
+// Khởi động server
 app.listen(port, () => {
   console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
 });
