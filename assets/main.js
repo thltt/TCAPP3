@@ -128,6 +128,19 @@ function exportToExcel() {
   const table = document.getElementById("transactionTable");
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.table_to_sheet(table);
+
+  // Duyệt qua tất cả các ô, tìm giá trị tiền dạng "20.000" hoặc "1.200.000"
+  Object.keys(ws).forEach((cell) => {
+    if (cell[0] === "!") return; // bỏ qua metadata
+    const raw = ws[cell].v;
+
+    if (typeof raw === "string" && raw.match(/^\d{1,3}(\.\d{3})*$/)) {
+      const numberValue = Number(raw.replace(/\./g, "")); // bỏ dấu chấm
+      ws[cell].v = numberValue; // gán lại giá trị số
+      ws[cell].t = "n"; // ép kiểu number
+    }
+  });
+
   XLSX.utils.book_append_sheet(wb, ws, "GiaoDich");
 
   const now = new Date().toISOString().slice(0, 10);

@@ -10,7 +10,6 @@ const port = process.env.PORT || 8050;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Tạo connection pool thay vì single connection
 const pool = mysql.createPool({
   port: process.env.MYSQL_ADDON_PORT || 3306,
   host: process.env.MYSQL_ADDON_HOST,
