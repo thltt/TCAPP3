@@ -40,7 +40,7 @@ function renderTable(transactions) {
       <td class="currency">${formatCurrency(amount)}</td>
       <td>${t.category}</td>
       <td class="currency">${formatCurrency(balance)}</td>
-      <td>${t.note || ""}</td>
+      <!-- <td>${t.note || ""}</td>  -->
       <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
     `;
   });
