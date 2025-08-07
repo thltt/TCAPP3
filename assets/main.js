@@ -25,26 +25,33 @@ function renderTable(transactions) {
     tableBody.deleteRow(1);
   }
 
-  balance = 0;
-  transactions.forEach((t) => {
+  // B1: Tính số dư từ dưới lên
+  let balance = 0;
+  const balances = []; // Mảng lưu số dư cho từng giao dịch, tính từ dưới lên
+  for (let i = transactions.length - 1; i >= 0; i--) {
+    const amount = parseFloat(transactions[i].amount);
+    balance += transactions[i].category === "Thu" ? amount : -amount;
+    balances[i] = balance; // Gán theo đúng vị trí gốc của transaction
+  }
+
+  // B2: Hiển thị từ mới đến cũ như cũ
+  tableBody.innerHTML = "";
+  transactions.forEach((t, index) => {
     const row = tableBody.insertRow(-1);
     const amount = parseFloat(t.amount);
     const formattedDate = t.date.slice(0, 10); // yyyy-mm-dd
 
-    balance += t.category === "Thu" ? amount : -amount;
-
     row.innerHTML = `
-      <td>${formattedDate}</td>
-      <td>${t.name}</td>
-      <td>${t.type}</td>
-      <td class="currency">${formatCurrency(amount)}</td>
-      <td>${t.category}</td>
-      <td class="currency">${formatCurrency(balance)}</td>
-      <!-- <td>${t.note || ""}</td>  -->
-      <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
-    `;
+    <td>${formattedDate}</td>
+    <td>${t.name}</td>
+    <td>${t.type}</td>
+    <td class="currency">${formatCurrency(amount)}</td>
+    <td>${t.category}</td>
+    <td class="currency">${formatCurrency(balances[index])}</td>
+    <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
+  `;
   });
-
+  transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
   document.getElementById("startingBalance").innerText = formatCurrency(0);
 }
 
