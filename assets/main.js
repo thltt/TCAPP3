@@ -28,16 +28,16 @@ async function inputStartingBalance() {
 
   // Gửi lên server
   try {
-    const response = await fetch("https://tcapp2.onrender.com/api/startingBalance", {
+    const response = await fetch("https://tcapp2.onrender.com/api/starting-balance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ balance: inputValue }),
+      body: JSON.stringify({ starting_balance: inputValue }),
     });
 
     if (!response.ok) throw new Error("Lỗi khi lưu tồn đầu");
 
     document.getElementById("startingBalance").innerText = formatCurrency(inputValue);
-    renderTable(settings, inputValue);
+    renderTable(transactions, inputValue);
     inputElement.value = "";
   } catch (err) {
     console.error(err);
@@ -53,9 +53,9 @@ function deleteStartingBalance() {
 // Lấy giá trị tồn đầu khi mở trang
 async function fetchStartingBalance() {
   try {
-    const res = await fetch("https://tcapp2.onrender.com/api/startingBalance");
+    const res = await fetch("https://tcapp2.onrender.com/api/starting-balance");
     const data = await res.json();
-    const startingBalance = parseFloat(data.balance) || 0;
+    const startingBalance = parseFloat(data.starting_balance) || 0;
 
     document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
     renderTable(transactions, startingBalance);
@@ -179,8 +179,20 @@ function clearInputs() {
 // Tự động tải lại khi trang được mở
 // window.onload = fetchTransactions;
 window.onload = async function () {
-  await fetchStartingBalance(); // Lấy tồn đầu từ server
-  await fetchTransactions(); // Lấy danh sách giao dịch
+  try {
+    const resBalance = await fetch("https://tcapp2.onrender.com/api/starting-balance");
+    const dataBalance = await resBalance.json();
+    const startingBalance = parseFloat(dataBalance.starting_balance) || 0;
+
+    const resTransactions = await fetch("https://tcapp2.onrender.com/api/transactions");
+    transactions = await resTransactions.json();
+
+    renderTable(transactions, startingBalance);
+    document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
+  } catch (err) {
+    console.error("Lỗi tải dữ liệu:", err);
+    alert("Không thể tải dữ liệu từ server.");
+  }
 };
 
 // Xuất Excel
