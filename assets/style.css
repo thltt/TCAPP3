@@ -46,7 +46,7 @@ button {
   color: white;
   border: none;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: 0.3s ease;
 }
 
 button:hover {
@@ -84,11 +84,23 @@ th {
 }
 
 .start-row td {
-  text-align: right;
+  text-align: center;
   font-weight: bold;
   background-color: #e0f7fa;
 }
-
+.input__startingBalance {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 20px;
+}
+.input__startingBalance input {
+  padding: 8px 15px;
+}
+.input__startingBalance button {
+  padding: 8px 20px;
+  margin-right: 50px;
+}
 .currency {
   text-align: right;
 }

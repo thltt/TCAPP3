@@ -1,4 +1,5 @@
 let balance = 0;
+let transactions = [];
 
 function formatCurrency(number) {
   return Number(number).toLocaleString("vi-VN");
@@ -8,7 +9,7 @@ function formatCurrency(number) {
 async function fetchTransactions() {
   try {
     const response = await fetch("https://tcapp2.onrender.com/api/transactions");
-    const transactions = await response.json();
+    transactions = await response.json();
     renderTable(transactions);
   } catch (error) {
     console.error("Không thể kết nối server:", error);
@@ -16,8 +17,56 @@ async function fetchTransactions() {
   }
 }
 
+// Nhập giá trị tồn đầu
+async function inputStartingBalance() {
+  const inputElement = document.getElementById("startingBalanceInput");
+  const inputValue = parseFloat(inputElement.value);
+  if (isNaN(inputValue)) {
+    alert("Vui lòng nhập số hợp lệ.");
+    return;
+  }
+
+  // Gửi lên server
+  try {
+    const response = await fetch("https://tcapp2.onrender.com/api/startingBalance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ balance: inputValue }),
+    });
+
+    if (!response.ok) throw new Error("Lỗi khi lưu tồn đầu");
+
+    document.getElementById("startingBalance").innerText = formatCurrency(inputValue);
+    renderTable(settings, inputValue);
+    inputElement.value = "";
+  } catch (err) {
+    console.error(err);
+    alert("Không thể lưu tồn đầu lên server.");
+  }
+}
+
+// Xóa giá trị tồn đầu
+function deleteStartingBalance() {
+  document.getElementById("startingBalance").innerText = 0;
+}
+
+// Lấy giá trị tồn đầu khi mở trang
+async function fetchStartingBalance() {
+  try {
+    const res = await fetch("https://tcapp2.onrender.com/api/startingBalance");
+    const data = await res.json();
+    const startingBalance = parseFloat(data.balance) || 0;
+
+    document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
+    renderTable(transactions, startingBalance);
+  } catch (error) {
+    console.error("Không thể tải tồn đầu:", error);
+    renderTable(transactions, 0);
+  }
+}
+
 // Hiển thị bảng dữ liệu
-function renderTable(transactions) {
+function renderTable(transactions, startingBalance = 0) {
   const tableBody = document.getElementById("transactionTable").getElementsByTagName("tbody")[0];
 
   // Xóa tất cả hàng sau dòng "TỒN ĐẦU"
@@ -25,34 +74,34 @@ function renderTable(transactions) {
     tableBody.deleteRow(1);
   }
 
-  // B1: Tính số dư từ dưới lên
-  let balance = 0;
-  const balances = []; // Mảng lưu số dư cho từng giao dịch, tính từ dưới lên
+  // Tính số dư từ dưới lên (dựa vào startingBalance)
+  let balance = startingBalance;
+  const balances = [];
   for (let i = transactions.length - 1; i >= 0; i--) {
     const amount = parseFloat(transactions[i].amount);
     balance += transactions[i].category === "Thu" ? amount : -amount;
-    balances[i] = balance; // Gán theo đúng vị trí gốc của transaction
+    balances[i] = balance;
   }
 
-  // B2: Hiển thị từ mới đến cũ như cũ
-  tableBody.innerHTML = "";
+  // Hiển thị bảng từ mới đến cũ
   transactions.forEach((t, index) => {
     const row = tableBody.insertRow(-1);
     const amount = parseFloat(t.amount);
-    const formattedDate = t.date.slice(0, 10); // yyyy-mm-dd
+    const formattedDate = t.date.slice(0, 10);
 
     row.innerHTML = `
-    <td>${formattedDate}</td>
-    <td>${t.name}</td>
-    <td>${t.type}</td>
-    <td class="currency">${formatCurrency(amount)}</td>
-    <td>${t.category}</td>
-    <td class="currency">${formatCurrency(balances[index])}</td>
-    <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
-  `;
+      <td>${formattedDate}</td>
+      <td>${t.name}</td>
+      <td>${t.type}</td>
+      <td class="currency">${formatCurrency(amount)}</td>
+      <td>${t.category}</td>
+      <td class="currency">${formatCurrency(balances[index])}</td>
+      <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
+    `;
   });
-  transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-  document.getElementById("startingBalance").innerText = formatCurrency(0);
+
+  // Cập nhật lại hiển thị tồn đầu (dự phòng)
+  document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
 }
 
 // Gửi dữ liệu lên server khi bấm "Thêm"
@@ -74,7 +123,7 @@ async function addRow() {
     type,
     amount,
     category,
-    note: "", // bạn có thể thêm input ghi chú nếu muốn
+    note: "",
   };
 
   try {
@@ -128,7 +177,11 @@ function clearInputs() {
 }
 
 // Tự động tải lại khi trang được mở
-window.onload = fetchTransactions;
+// window.onload = fetchTransactions;
+window.onload = async function () {
+  await fetchStartingBalance(); // Lấy tồn đầu từ server
+  await fetchTransactions(); // Lấy danh sách giao dịch
+};
 
 // Xuất Excel
 function exportToExcel() {

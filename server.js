@@ -19,6 +19,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  multipleStatements: true,
 });
 
 // Kiểm tra kết nối
@@ -42,7 +43,28 @@ CREATE TABLE IF NOT EXISTS transactions (
   category VARCHAR(50),
   note TEXT
 );
+CREATE TABLE IF NOT EXISTS settings (
+  id INT PRIMARY KEY DEFAULT 1,
+  starting_balance DECIMAL(15,2) DEFAULT 0
+);
 `;
+
+// API: Cập nhật hoặc lấy tồn đầu
+app.get("/api/starting-balance", (req, res) => {
+  pool.query("SELECT starting_balance FROM settings WHERE id = 1", (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ starting_balance: rows[0].starting_balance });
+  });
+});
+
+app.post("/api/starting-balance", (req, res) => {
+  const { starting_balance } = req.body;
+  const sql = "UPDATE settings SET starting_balance = ? WHERE id = 1";
+  pool.query(sql, [starting_balance], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "Cập nhật tồn đầu thành công." });
+  });
+});
 
 pool.query(createTable, (err) => {
   if (err) console.error("❌ Lỗi tạo bảng:", err);

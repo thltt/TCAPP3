@@ -39,6 +39,30 @@
       <button onclick="exportToExcel()">Xuất Excel</button>
     </div>
 
+    <table>
+      <colgroup>
+        <col style="width: 55%" />
+        <col style="width: 10%" />
+        <col style="width: 10%" />
+        <col style="width: 20%" />
+        <col style="width: 5%" />
+      </colgroup>
+      <tr class="start-row">
+        <td colspan="3">
+          <div class="input__startingBalance">
+            <label for="startingBalanceInput"
+              >Nhập tồn đầu:
+              <input id="startingBalanceInput" type="text" />
+            </label>
+            <button onclick="inputStartingBalance()">Nhập</button>
+            <p>Tồn Đầu</p>
+          </div>
+        </td>
+        <td class="currency" id="startingBalance">0</td>
+        <td><button onclick="deleteStartingBalance()">Xóa</button></td>
+      </tr>
+    </table>
+
     <table id="transactionTable">
       <thead>
         <tr>
@@ -51,13 +75,7 @@
           <th>Xóa</th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="start-row">
-          <td colspan="5">TỒN ĐẦU</td>
-          <td class="currency" id="startingBalance">0</td>
-          <td colspan="2"></td>
-        </tr>
-      </tbody>
+      <tbody></tbody>
     </table>
 
     <script src="./assets/main.js"></script>
