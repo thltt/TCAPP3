@@ -116,6 +116,14 @@ app.delete("/api/transactions/:id", (req, res) => {
   });
 });
 
+// giữ awake
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    uptime: process.uptime(),
+    time: new Date(),
+  });
+});
 // Khởi động server
 app.listen(port, () => {
   console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
