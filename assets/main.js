@@ -172,10 +172,10 @@ async function deleteTransaction(id) {
 // Xóa dữ liệu form
 function clearInputs() {
   document.getElementById("dateInput").value = "";
-  document.getElementById("nameInput").value = "Phượng";
+  document.getElementById("nameInput").value = "Em Đại";
   document.getElementById("typeInput").value = "";
   document.getElementById("amountInput").value = "";
-  document.getElementById("categoryInput").value = "Thu";
+  document.getElementById("categoryInput").value = "Chi";
 }
 
 // Xuất Excel
