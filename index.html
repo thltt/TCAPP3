@@ -12,31 +12,43 @@
     <h2>THEO DÕI THU CHI</h2>
 
     <div class="input-row">
-      <label for="dateInput">Ngày:</label>
-      <input type="date" id="dateInput" lang="vi" />
+      <div class="input-group">
+        <label for="dateInput">Ngày:</label>
+        <input type="date" id="dateInput" lang="vi" />
+      </div>
 
-      <label for="nameInput">Người nộp:</label>
-      <select id="nameInput">
-        <option value="Em Đại">Em Đại</option>
-        <option value="Chị Thiện">Chị Thiện</option>
-        <option value="Phượng">Phượng</option>
-      </select>
+      <div class="input-group">
+        <label for="nameInput">Người nộp:</label>
+        <select id="nameInput">
+          <option value="Em Đại">Em Đại</option>
+          <option value="Chị Thiện">Chị Thiện</option>
+          <option value="Phượng">Phượng</option>
+        </select>
+      </div>
 
-      <label for="typeInput">Giao dịch:</label>
-      <input type="text" id="typeInput" />
+      <div class="input-group">
+        <label for="typeInput">Giao dịch:</label>
+        <input type="text" id="typeInput" />
+      </div>
 
-      <label for="amountInput">Số tiền:</label>
-      <input type="number" id="amountInput" />
+      <div class="input-group">
+        <label for="amountInput">Số tiền:</label>
+        <input type="number" id="amountInput" />
+      </div>
 
-      <label for="categoryInput">Loại:</label>
-      <select id="categoryInput">
-        <option value="Chi">Chi</option>
-        <option value="Thu">Thu</option>
-      </select>
+      <div class="input-group">
+        <label for="categoryInput">Loại:</label>
+        <select id="categoryInput">
+          <option value="Chi">Chi</option>
+          <option value="Thu">Thu</option>
+        </select>
+      </div>
 
-      <button onclick="addRow()">Thêm</button>
-      <button class="clear-button" onclick="clearInputs()">Đặt lại</button>
-      <button onclick="exportToExcel()">Xuất Excel</button>
+      <div class="button-group">
+        <button onclick="addRow()">Thêm</button>
+        <button class="clear-button" onclick="clearInputs()">Đặt lại</button>
+        <button onclick="exportToExcel()">Xuất Excel</button>
+      </div>
     </div>
 
     <table>
@@ -50,16 +62,14 @@
       <tr class="start-row">
         <td colspan="3">
           <div class="input__startingBalance">
-            <label for="startingBalanceInput"
-              >Nhập tồn đầu:
-              <input id="startingBalanceInput" type="text" />
-            </label>
+            <label for="startingBalanceInput">Nhập tồn đầu:</label>
+            <input id="startingBalanceInput" type="text" />
             <button onclick="inputStartingBalance()">Nhập</button>
             <p>Tồn Đầu</p>
           </div>
         </td>
         <td class="currency" id="startingBalance">0</td>
-        <td><button onclick="deleteStartingBalance()">Xóa</button></td>
+        <td><button style="background-color: #0077b6" onclick="deleteStartingBalance()">Xóa</button></td>
       </tr>
     </table>
 
@@ -68,10 +78,10 @@
         <tr>
           <th>Ngày</th>
           <th>Người nộp</th>
-          <th>Loại giao dịch</th>
+          <th>Giao dịch</th>
           <th>Số tiền</th>
-          <th>Thu / Chi</th>
-          <th>Số dư còn lại</th>
+          <th>Thu/Chi</th>
+          <th>Số dư</th>
           <th>Xóa</th>
         </tr>
       </thead>

@@ -105,20 +105,88 @@ th {
   text-align: right;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  /* Gom label + input trên cùng 1 hàng */
   .input-row {
     flex-direction: column;
-    align-items: stretch;
+    gap: 8px;
   }
 
-  .input-row label {
-    text-align: left;
-    margin-top: 8px;
-  }
-
-  input,
-  select,
-  button {
+  /* Mỗi nhóm label + input là một hàng */
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     width: 100%;
+  }
+
+  .input-group label {
+    min-width: 60px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .input-group input,
+  .input-group select {
+    flex: 1;
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  /* Nhóm nút bấm chung một hàng */
+  .button-group {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    column-gap: 2%;
+  }
+
+  .button-group button {
+    flex: 1;
+    min-width: 80px;
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  /* Bảng tồn đầu gọn hơn */
+  .input__startingBalance {
+    display: flex;
+    gap: 5px;
+  }
+  .input__startingBalance label {
+    display: none;
+  }
+
+  .input__startingBalance input {
+    padding: 6px;
+    font-size: 10px;
+    width: 50%;
+  }
+
+  .input__startingBalance button {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-right: 0;
+  }
+
+  /* Table cuộn ngang */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: wrap;
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 2px;
   }
 }
