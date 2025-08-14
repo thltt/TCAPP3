@@ -32,28 +32,6 @@ pool.getConnection((err, connection) => {
   connection.release();
 });
 
-// Tạo bảng nếu chưa có
-const createTable = `
-CREATE TABLE IF NOT EXISTS transactions (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  date DATETIME NOT NULL,
-  name VARCHAR(255),
-  type VARCHAR(50),
-  amount DECIMAL(15,2) NOT NULL,
-  category VARCHAR(50),
-  note TEXT
-);
-CREATE TABLE IF NOT EXISTS settings (
-  id INT PRIMARY KEY DEFAULT 1,
-  starting_balance DECIMAL(15,2) DEFAULT 0
-);
-`;
-
-pool.query(createTable, (err) => {
-  if (err) console.error("❌ Lỗi tạo bảng:", err);
-  else console.log("✅ Bảng transactions đã sẵn sàng.");
-});
-
 // API lấy giá trị tồn đầu
 app.get("/api/starting-balance", (req, res) => {
   pool.query("SELECT starting_balance FROM settings WHERE id = 1", (err, rows) => {
@@ -61,17 +39,8 @@ app.get("/api/starting-balance", (req, res) => {
     res.json({ starting_balance: rows[0].starting_balance });
   });
 });
-// API cập nhật giá trị tồn đầu
-app.post("/api/starting-balance", (req, res) => {
-  const { starting_balance } = req.body;
-  const sql = "UPDATE settings SET starting_balance = ? WHERE id = 1";
-  pool.query(sql, [starting_balance], (err) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: "Cập nhật tồn đầu thành công." });
-  });
-});
 
-// API xóa tồn đầu
+// API cập nhật và xóa tồn đầu
 app.post("/api/starting-balance", (req, res) => {
   const sql = "UPDATE settings SET starting_balance = 0 WHERE id = 1";
   pool.query(sql, (err) => {
