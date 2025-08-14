@@ -36,7 +36,7 @@ pool.getConnection((err, connection) => {
 const createTable = `
 CREATE TABLE IF NOT EXISTS transactions (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  date DATE NOT NULL,
+  date DATETIME NOT NULL,
   name VARCHAR(255),
   type VARCHAR(50),
   amount DECIMAL(15,2) NOT NULL,
@@ -49,14 +49,19 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 `;
 
-// API: Cập nhật hoặc lấy tồn đầu
+pool.query(createTable, (err) => {
+  if (err) console.error("❌ Lỗi tạo bảng:", err);
+  else console.log("✅ Bảng transactions đã sẵn sàng.");
+});
+
+// API lấy giá trị tồn đầu
 app.get("/api/starting-balance", (req, res) => {
   pool.query("SELECT starting_balance FROM settings WHERE id = 1", (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ starting_balance: rows[0].starting_balance });
   });
 });
-
+// API cập nhật giá trị tồn đầu
 app.post("/api/starting-balance", (req, res) => {
   const { starting_balance } = req.body;
   const sql = "UPDATE settings SET starting_balance = ? WHERE id = 1";
@@ -66,9 +71,13 @@ app.post("/api/starting-balance", (req, res) => {
   });
 });
 
-pool.query(createTable, (err) => {
-  if (err) console.error("❌ Lỗi tạo bảng:", err);
-  else console.log("✅ Bảng transactions đã sẵn sàng.");
+// API xóa tồn đầu
+app.post("/api/starting-balance", (req, res) => {
+  const sql = "UPDATE settings SET starting_balance = 0 WHERE id = 1";
+  pool.query(sql, (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "Xóa tồn đầu thành công." });
+  });
 });
 
 // API thêm giao dịch
@@ -88,7 +97,9 @@ app.get("/api/transactions", (req, res) => {
   const limit = parseInt(req.query.limit) || 50;
   const offset = (page - 1) * limit;
 
-  const sql = "SELECT * FROM transactions ORDER BY date DESC LIMIT ? OFFSET ?";
+  // const sql = "SELECT * FROM transactions ORDER BY date DESC LIMIT ? OFFSET ?";
+  const sql = "SELECT * FROM transactions ORDER BY date DESC, id DESC LIMIT ? OFFSET ?";
+
   pool.query(sql, [limit, offset], (err, rows) => {
     if (err) return res.status(500).json({ error: err });
     res.json(rows);
@@ -124,6 +135,7 @@ app.get("/health", (req, res) => {
     time: new Date(),
   });
 });
+
 // Khởi động server
 app.listen(port, () => {
   console.log(`🚀 Server đang chạy tại http://localhost:${port}`);

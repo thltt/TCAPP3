@@ -1,19 +1,31 @@
-let balance = 0;
 let transactions = [];
 
+// Định dạng tiền tệ
 function formatCurrency(number) {
-  return Number(number).toLocaleString("vi-VN");
+  return Number(number || 0).toLocaleString("vi-VN");
 }
 
-// Tải danh sách giao dịch từ server
-async function fetchTransactions() {
+// Tải dữ liệu tồn đầu và giao dịch từ server
+async function loadData() {
   try {
-    const response = await fetch("https://tcapp2.onrender.com/api/transactions");
-    transactions = await response.json();
-    renderTable(transactions);
-  } catch (error) {
-    console.error("Không thể kết nối server:", error);
-    alert("Không thể kết nối tới server.");
+    // Lấy tồn đầu
+    const resBalance = await fetch("https://tcapp2.onrender.com/api/starting-balance");
+    const dataBalance = await resBalance.json();
+    const startingBalance = parseFloat(dataBalance.starting_balance) || 0;
+
+    // Lấy danh sách giao dịch
+    const resTransactions = await fetch("https://tcapp2.onrender.com/api/transactions");
+    transactions = await resTransactions.json();
+    if (!Array.isArray(transactions)) transactions = [];
+
+    // Render bảng
+    renderTable(transactions, startingBalance);
+
+    // Cập nhật hiển thị tồn đầu
+    document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
+  } catch (err) {
+    console.error("Lỗi tải dữ liệu:", err);
+    alert("Không thể tải dữ liệu từ server.");
   }
 }
 
@@ -26,7 +38,6 @@ async function inputStartingBalance() {
     return;
   }
 
-  // Gửi lên server
   try {
     const response = await fetch("https://tcapp2.onrender.com/api/starting-balance", {
       method: "POST",
@@ -36,9 +47,8 @@ async function inputStartingBalance() {
 
     if (!response.ok) throw new Error("Lỗi khi lưu tồn đầu");
 
-    document.getElementById("startingBalance").innerText = formatCurrency(inputValue);
-    renderTable(transactions, inputValue);
     inputElement.value = "";
+    await loadData();
   } catch (err) {
     console.error(err);
     alert("Không thể lưu tồn đầu lên server.");
@@ -46,22 +56,19 @@ async function inputStartingBalance() {
 }
 
 // Xóa giá trị tồn đầu
-function deleteStartingBalance() {
-  document.getElementById("startingBalance").innerText = 0;
-}
-
-// Lấy giá trị tồn đầu khi mở trang
-async function fetchStartingBalance() {
+async function deleteStartingBalance() {
   try {
-    const res = await fetch("https://tcapp2.onrender.com/api/starting-balance");
-    const data = await res.json();
-    const startingBalance = parseFloat(data.starting_balance) || 0;
+    const response = await fetch("https://tcapp2.onrender.com/api/starting-balance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ starting_balance: 0 }),
+    });
 
-    document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
-    renderTable(transactions, startingBalance);
-  } catch (error) {
-    console.error("Không thể tải tồn đầu:", error);
-    renderTable(transactions, 0);
+    if (!response.ok) throw new Error("Lỗi khi xóa tồn đầu");
+    await loadData();
+  } catch (err) {
+    console.error(err);
+    alert("Không thể xóa tồn đầu trên server.");
   }
 }
 
@@ -69,56 +76,59 @@ async function fetchStartingBalance() {
 function renderTable(transactions, startingBalance = 0) {
   const tableBody = document.getElementById("transactionTable").getElementsByTagName("tbody")[0];
 
-  // Xóa tất cả hàng sau dòng "TỒN ĐẦU"
-  while (tableBody.rows.length > 1) {
-    tableBody.deleteRow(1);
-  }
+  // Xóa toàn bộ hàng cũ
+  tableBody.innerHTML = "";
 
-  // Tính số dư từ dưới lên (dựa vào startingBalance)
+  // Tính số dư từ dưới lên
   let balance = startingBalance;
   const balances = [];
   for (let i = transactions.length - 1; i >= 0; i--) {
-    const amount = parseFloat(transactions[i].amount);
-    balance += transactions[i].category === "Thu" ? amount : -amount;
+    const amount = parseFloat(transactions[i].amount) || 0;
+    const isThu = String(transactions[i].category).toLowerCase() === "thu";
+    balance += isThu ? amount : -amount;
     balances[i] = balance;
   }
 
-  // Hiển thị bảng từ mới đến cũ
+  // Render từng dòng
   transactions.forEach((t, index) => {
     const row = tableBody.insertRow(-1);
-    const amount = parseFloat(t.amount);
-    const formattedDate = t.date.slice(0, 10);
+    const amount = parseFloat(t.amount) || 0;
+    const formattedDate = t.date ? t.date.slice(0, 10) : "";
 
     row.innerHTML = `
       <td>${formattedDate}</td>
-      <td>${t.name}</td>
-      <td>${t.type}</td>
+      <td>${t.name || ""}</td>
+      <td>${t.type || ""}</td>
       <td class="currency">${formatCurrency(amount)}</td>
-      <td>${t.category}</td>
+      <td>${t.category || ""}</td>
       <td class="currency">${formatCurrency(balances[index])}</td>
       <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
     `;
   });
-
-  // Cập nhật lại hiển thị tồn đầu (dự phòng)
-  document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
 }
 
-// Gửi dữ liệu lên server khi bấm "Thêm"
+// Thêm giao dịch mới
 async function addRow() {
-  const date = document.getElementById("dateInput").value;
+  const dateInput = document.getElementById("dateInput").value;
   const name = document.getElementById("nameInput").value;
   const type = document.getElementById("typeInput").value;
   const amount = parseFloat(document.getElementById("amountInput").value);
   const category = document.getElementById("categoryInput").value;
 
-  if (!date || !type || isNaN(amount)) {
+  if (!dateInput || !type || isNaN(amount)) {
     alert("Vui lòng nhập đầy đủ thông tin.");
     return;
   }
 
+  // Lấy thời gian hiện tại để kết hợp với ngày
+  const now = new Date();
+  const dateTime = `${dateInput} ${now.getHours().toString().padStart(2, "0")}:${now
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`;
+
   const data = {
-    date,
+    date: dateTime,
     name,
     type,
     amount,
@@ -129,25 +139,21 @@ async function addRow() {
   try {
     const response = await fetch("https://tcapp2.onrender.com/api/transactions", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
 
-    if (response.ok) {
-      await fetchTransactions(); // cập nhật lại bảng
-      clearInputs();
-    } else {
-      alert("Lỗi khi thêm giao dịch.");
-    }
+    if (!response.ok) throw new Error("Lỗi khi thêm giao dịch");
+
+    clearInputs();
+    await loadData();
   } catch (error) {
     console.error("Lỗi kết nối server:", error);
     alert("Không kết nối được tới server.");
   }
 }
 
-// Gọi API xóa giao dịch
+// Xóa giao dịch
 async function deleteTransaction(id) {
   if (!confirm("Bạn có chắc chắn muốn xóa dòng này?")) return;
 
@@ -155,19 +161,15 @@ async function deleteTransaction(id) {
     const response = await fetch(`https://tcapp2.onrender.com/api/transactions/${id}`, {
       method: "DELETE",
     });
-
-    if (response.ok) {
-      await fetchTransactions();
-    } else {
-      alert("Xóa không thành công.");
-    }
+    await loadData();
+    if (!response.ok) throw new Error("Xóa không thành công");
   } catch (error) {
     console.error("Lỗi khi xóa:", error);
     alert("Không thể kết nối tới server để xóa.");
   }
 }
 
-// Xóa dữ liệu trên form
+// Xóa dữ liệu form
 function clearInputs() {
   document.getElementById("dateInput").value = "";
   document.getElementById("nameInput").value = "Phượng";
@@ -176,25 +178,6 @@ function clearInputs() {
   document.getElementById("categoryInput").value = "Thu";
 }
 
-// Tự động tải lại khi trang được mở
-// window.onload = fetchTransactions;
-window.onload = async function () {
-  try {
-    const resBalance = await fetch("https://tcapp2.onrender.com/api/starting-balance");
-    const dataBalance = await resBalance.json();
-    const startingBalance = parseFloat(dataBalance.starting_balance) || 0;
-
-    const resTransactions = await fetch("https://tcapp2.onrender.com/api/transactions");
-    transactions = await resTransactions.json();
-
-    renderTable(transactions, startingBalance);
-    document.getElementById("startingBalance").innerText = formatCurrency(startingBalance);
-  } catch (err) {
-    console.error("Lỗi tải dữ liệu:", err);
-    alert("Không thể tải dữ liệu từ server.");
-  }
-};
-
 // Xuất Excel
 function exportToExcel() {
   const table = document.getElementById("transactionTable");
@@ -202,17 +185,19 @@ function exportToExcel() {
   const ws = XLSX.utils.table_to_sheet(table, { raw: true });
 
   Object.keys(ws).forEach((cell) => {
-    if (cell[0] === "!") return; // bỏ qua metadata
+    if (cell[0] === "!") return;
     const raw = ws[cell].v;
 
     if (typeof raw === "string" && raw.match(/^\d{1,3}(\.\d{3})*$/)) {
-      const numberValue = Number(raw.replace(/\./g, "")); // bỏ dấu chấm
-      ws[cell].v = numberValue; // gán lại giá trị số
-      ws[cell].t = "n"; // ép kiểu number
+      const numberValue = Number(raw.replace(/\./g, ""));
+      ws[cell].v = numberValue;
+      ws[cell].t = "n";
     }
   });
 
   XLSX.utils.book_append_sheet(wb, ws, "GiaoDich");
-
   XLSX.writeFile(wb, `Thu_Chi.xlsx`);
 }
+
+// Khi load trang
+window.onload = loadData;
