@@ -110,6 +110,12 @@ th {
 .transactionTable tbody tr:nth-child(odd) {
   background: linear-gradient(to top, #e0f7fa, #fff0f6);
 }
+.transactionTable tbody tr:nth-child(even) .deleteTransaction-btn {
+  background-color: #479ccb;
+}
+.transactionTable tbody tr:nth-child(odd) .deleteTransaction-btn {
+  background-color: #d878a8;
+}
 
 @media (max-width: 480px) {
   body {
@@ -121,13 +127,11 @@ th {
     margin-bottom: 20px;
   }
 
-  /* Gom label + input trên cùng 1 hàng */
   .input-row {
     flex-direction: column;
     gap: 8px;
   }
 
-  /* Mỗi nhóm label + input là một hàng */
   .input-group {
     display: flex;
     align-items: center;
@@ -148,7 +152,6 @@ th {
     padding: 6px;
   }
 
-  /* Nhóm nút bấm chung một hàng */
   .button-group {
     display: grid;
     grid-template-columns: 2fr 2fr 1fr;
@@ -162,7 +165,6 @@ th {
     padding: 6px;
   }
 
-  /* Bảng tồn đầu gọn hơn */
   .input__startingBalance {
     display: flex;
     gap: 5px;
@@ -183,7 +185,6 @@ th {
     margin-right: 0;
   }
 
-  /* Table cuộn ngang */
   .transactionTable {
     display: block;
     overflow-x: auto;
@@ -195,6 +196,10 @@ th {
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 10px;
+  }
+  .startingBalanceTable {
+    display: block;
+    font-size: 0.8rem;
   }
 
   th,
