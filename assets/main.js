@@ -102,7 +102,7 @@ function renderTable(transactions, startingBalance = 0) {
       <td class="currency">${formatCurrency(amount)}</td>
       <td>${t.category || ""}</td>
       <td class="currency">${formatCurrency(balances[index])}</td>
-      <td><button onclick="deleteTransaction(${t.id})">Xóa</button></td>
+      <td><button class="deleteTransaction-btn" onclick="deleteTransaction(${t.id})">Xóa</button></td>
     `;
   });
 }

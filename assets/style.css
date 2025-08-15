@@ -102,7 +102,13 @@ th {
   margin-right: 50px;
 }
 .currency {
-  text-align: right;
+  text-align: center;
+}
+.transactionTable tbody tr:nth-child(even) {
+  background: linear-gradient(to top, #e0f7fa, #fff0f6);
+}
+.transactionTable tbody tr:nth-child(odd) {
+  background: linear-gradient(to top, #e0f7fa, #fff0f6);
 }
 
 @media (max-width: 480px) {
@@ -178,15 +184,21 @@ th {
   }
 
   /* Table cuộn ngang */
-  table {
+  .transactionTable {
     display: block;
     overflow-x: auto;
     white-space: wrap;
     font-size: 12px;
   }
+  .deleteTransaction-btn {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 10px;
+  }
 
   th,
   td {
-    padding: 2px;
+    padding: 3px;
   }
 }

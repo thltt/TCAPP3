@@ -40,12 +40,14 @@ app.get("/api/starting-balance", (req, res) => {
   });
 });
 
-// API cập nhật và xóa tồn đầu
+// API cập nhật hoặc xóa tồn đầu
 app.post("/api/starting-balance", (req, res) => {
-  const sql = "UPDATE settings SET starting_balance = 0 WHERE id = 1";
-  pool.query(sql, (err) => {
+  console.log("Body nhận:", req.body);
+  const { starting_balance } = req.body;
+  const sql = "UPDATE settings SET starting_balance = ? WHERE id = 1";
+  pool.query(sql, [starting_balance], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: "Xóa tồn đầu thành công." });
+    res.json({ message: "Chỉnh sửa tồn đầu thành công.", result });
   });
 });
 
