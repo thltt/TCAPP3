@@ -5,93 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Theo dõi thu chi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../public/reset.css" />
     <link rel="stylesheet" href="../public/style.css" />
   </head>
   <body>
-    <nav class="thuchi__navbar">
-      <ul>
-        <li><a href="../../index.html">Về trang chủ</a></li>
-      </ul>
-    </nav>
+    <header class="thuchi-header">
+      <nav>
+        <ul class="thuchi__navbar">
+          <li><a href="../../index.html">Về trang chủ</a></li>
+          <li><a href="">Phiếu chuyến</a></li>
+          <li><a href="">Công nợ</a></li>
+        </ul>
+      </nav>
+    </header>
 
-    <h2>THEO DÕI THU CHI</h2>
+    <main class="thuchi-main">
+      <h2>THEO DÕI THU CHI</h2>
 
-    <div class="input-row">
-      <div class="input-group">
-        <label for="dateInput">Ngày:</label>
-        <input type="date" id="dateInput" lang="vi" />
+      <div class="input-row">
+        <div class="input-group">
+          <label for="dateInput">Ngày:</label>
+          <input type="date" id="dateInput" lang="vi" />
+        </div>
+
+        <div class="input-group">
+          <label for="nameInput">Người nộp:</label>
+          <select id="nameInput">
+            <option value="Em Đại">Em Đại</option>
+            <option value="Chị Thiện">Chị Thiện</option>
+            <option value="Phượng">Phượng</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="typeInput">Giao dịch:</label>
+          <input type="text" id="typeInput" />
+        </div>
+
+        <div class="input-group">
+          <label for="amountInput">Số tiền:</label>
+          <input type="number" id="amountInput" />
+        </div>
+
+        <div class="input-group">
+          <label for="categoryInput">Loại:</label>
+          <select id="categoryInput">
+            <option value="Chi">Chi</option>
+            <option value="Thu">Thu</option>
+          </select>
+        </div>
+
+        <div class="button-group">
+          <button onclick="addRow()">Thêm</button>
+          <button class="clear-button" onclick="clearInputs()">Đặt lại</button>
+          <button onclick="exportToExcel()">Xuất Excel</button>
+        </div>
       </div>
 
-      <div class="input-group">
-        <label for="nameInput">Người nộp:</label>
-        <select id="nameInput">
-          <option value="Em Đại">Em Đại</option>
-          <option value="Chị Thiện">Chị Thiện</option>
-          <option value="Phượng">Phượng</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label for="typeInput">Giao dịch:</label>
-        <input type="text" id="typeInput" />
-      </div>
-
-      <div class="input-group">
-        <label for="amountInput">Số tiền:</label>
-        <input type="number" id="amountInput" />
-      </div>
-
-      <div class="input-group">
-        <label for="categoryInput">Loại:</label>
-        <select id="categoryInput">
-          <option value="Chi">Chi</option>
-          <option value="Thu">Thu</option>
-        </select>
-      </div>
-
-      <div class="button-group">
-        <button onclick="addRow()">Thêm</button>
-        <button class="clear-button" onclick="clearInputs()">Đặt lại</button>
-        <button onclick="exportToExcel()">Xuất Excel</button>
-      </div>
-    </div>
-
-    <table class="startingBalanceTable">
-      <colgroup>
-        <col style="width: 55%" />
-        <col style="width: 10%" />
-        <col style="width: 10%" />
-        <col style="width: 20%" />
-        <col style="width: 5%" />
-      </colgroup>
-      <tr class="start-row">
-        <td colspan="3">
-          <div class="input__startingBalance">
-            <label for="startingBalanceInput">Nhập tồn đầu:</label>
-            <input id="startingBalanceInput" type="text" />
-            <button onclick="inputStartingBalance()">Nhập</button>
-            <p>Tồn Đầu</p>
-          </div>
-        </td>
-        <td class="currency" id="startingBalance">0</td>
-        <td><button style="background-color: #0077b6" onclick="deleteStartingBalance()">Xóa</button></td>
-      </tr>
-    </table>
-
-    <table class="transactionTable" id="transactionTable">
-      <thead>
-        <tr>
-          <th>Ngày</th>
-          <th>Người nộp</th>
-          <th>Giao dịch</th>
-          <th>Số tiền</th>
-          <th>Thu/Chi</th>
-          <th>Số dư</th>
-          <th>Xóa</th>
+      <table class="startingBalanceTable">
+        <colgroup>
+          <col style="width: 55%" />
+          <col style="width: 10%" />
+          <col style="width: 10%" />
+          <col style="width: 20%" />
+          <col style="width: 5%" />
+        </colgroup>
+        <tr class="start-row">
+          <td colspan="3">
+            <div class="input__startingBalance">
+              <label for="startingBalanceInput">Nhập tồn đầu:</label>
+              <input id="startingBalanceInput" type="text" />
+              <button onclick="inputStartingBalance()">Nhập</button>
+              <p>Tồn Đầu</p>
+            </div>
+          </td>
+          <td class="currency" id="startingBalance">0</td>
+          <td><button style="background-color: #0077b6" onclick="deleteStartingBalance()">Xóa</button></td>
         </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+      </table>
+
+      <table class="transactionTable" id="transactionTable">
+        <thead>
+          <tr>
+            <th>Ngày</th>
+            <th>Người nộp</th>
+            <th>Giao dịch</th>
+            <th>Số tiền</th>
+            <th>Thu/Chi</th>
+            <th>Số dư</th>
+            <th>Xóa</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
 
     <script src="../public/main.js"></script>
   </body>
