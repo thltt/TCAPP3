@@ -11,9 +11,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-const pool = require("./config/database");
 const webRouter = require("./routes/web");
 app.use("/", webRouter); //goi route
+
+// Middleware xử lý lỗi tập trung
+app.use((err, req, res, next) => {
+  console.error("❌ Lỗi:", err);
+  res.status(500).json({ error: err.message });
+});
 
 // Khởi động server
 app.listen(port, () => {

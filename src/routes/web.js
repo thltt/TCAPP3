@@ -7,7 +7,7 @@ const {
   postStartingBalance,
   postTransactions,
   getTransactions,
-  countTransactions,
+  getCountTransactions,
   deleteTransactions,
 } = require("../controllers/homeController");
 
@@ -27,7 +27,7 @@ router.post("/api/transactions", postTransactions);
 router.get("/api/transactions", getTransactions);
 
 // API đếm tổng số giao dịch (hỗ trợ phân trang client)
-router.get("/api/transactions/count", countTransactions);
+router.get("/api/transactions/count", getCountTransactions);
 
 // API xóa giao dịch
 router.delete("/api/transactions/:id", deleteTransactions);

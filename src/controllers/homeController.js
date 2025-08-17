@@ -1,86 +1,69 @@
 const pool = require("../config/database");
+const {
+  getAmountStartingBalance,
+  updateStartingBalance,
+  addTransaction,
+  getTransactionsList,
+  countTransactions,
+  deleteTransaction,
+} = require("../services/CRUD");
 
 // Controller giữ awake
 const getAwake = (req, res) => {
-  res.status(200).json({
-    status: "ok",
-    uptime: process.uptime(),
-    time: new Date(),
-  });
+  res.status(200).json({ status: "ok", uptime: process.uptime(), time: new Date() });
 };
 
 // Controller lấy giá trị tồn đầu
-const getStartingBalance = (req, res) => {
-  pool.query("SELECT starting_balance FROM settings WHERE id = 1", (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ starting_balance: rows[0].starting_balance });
-  });
+const getStartingBalance = async (req, res) => {
+  const result = await getAmountStartingBalance();
+  res.json({ starting_balance: result.starting_balance });
 };
 
 // Controller cập nhật hoặc xóa tồn đầu
-const postStartingBalance = (req, res) => {
-  console.log("Body nhận:", req.body);
+const postStartingBalance = async (req, res) => {
   const { starting_balance } = req.body;
-  const sql = "UPDATE settings SET starting_balance = ? WHERE id = 1";
-  pool.query(sql, [starting_balance], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: "Chỉnh sửa tồn đầu thành công.", result });
-  });
+  const result = await updateStartingBalance(starting_balance);
+  res.json({ message: "Chỉnh sửa tồn đầu thành công.", result });
 };
 
 // Controller thêm giao dịch
-const postTransactions = (req, res) => {
-  const { date, name, type, amount, category, note } = req.body;
-  const sql = `INSERT INTO transactions (date, name, type, amount, category, note) 
-               VALUES (?, ?, ?, ?, ?, ?)`;
-  pool.query(sql, [date, name, type, amount, category, note], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ id: result.insertId });
-  });
+const postTransactions = async (req, res) => {
+  const id = await addTransaction(req.body);
+  res.json({ id });
 };
 
 // Controller lấy giao dịch (có phân trang)
-const getTransactions = (req, res) => {
+const getTransactions = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 50;
   const offset = (page - 1) * limit;
-
-  const sql = "SELECT * FROM transactions ORDER BY date DESC, id DESC LIMIT ? OFFSET ?";
-
-  pool.query(sql, [limit, offset], (err, rows) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(rows);
-  });
+  const rows = await getTransactionsList(limit, offset);
+  res.json(rows);
 };
 
 // Controller đếm tổng số giao dịch (hỗ trợ phân trang client)
-const countTransactions = (req, res) => {
-  pool.query("SELECT COUNT(*) as total FROM transactions", (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ total: result[0].total });
-  });
+const getCountTransactions = async (req, res) => {
+  const total = await countTransactions();
+  res.json({ total });
 };
 
 // Controller xóa giao dịch
-const deleteTransactions = (req, res) => {
+const deleteTransactions = async (req, res) => {
   const id = req.params.id;
-  pool.query("DELETE FROM transactions WHERE id = ?", [id], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.affectedRows === 0) {
-      res.status(404).json({ message: "Không tìm thấy giao dịch để xóa." });
-    } else {
-      res.json({ message: "Đã xóa thành công." });
-    }
-  });
+  const affected = await deleteTransaction(id);
+  if (affected === 0) {
+    res.status(404).json({ message: "Không tìm thấy giao dịch để xóa." });
+  } else {
+    res.json({ message: "Đã xóa thành công." });
+  }
 };
 
-// export
 module.exports = {
   getAwake,
   getStartingBalance,
   postStartingBalance,
   postTransactions,
   getTransactions,
-  countTransactions,
+  getCountTransactions,
   deleteTransactions,
 };
