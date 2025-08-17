@@ -1,3 +1,8 @@
+:root {
+  --color-blue: #0077b6;
+  --color-pink: #d63384;
+}
+
 html,
 body,
 div,
@@ -122,4 +127,24 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+/* Css riêng */
+a {
+  text-decoration: none;
+  color: #f6097f;
+  font-weight: 500;
+}
+a:hover {
+  text-shadow: 0px 0px 10px #0077b6;
+}
+
+.thuchi-header,
+.thuchi__navbar {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+.thuchi-header {
+  margin-bottom: 20px;
 }

@@ -9,15 +9,6 @@ body {
   padding: 20px;
 }
 
-a {
-  text-decoration: none;
-  color: #f6097f;
-  font-weight: 500;
-}
-a:hover {
-  text-shadow: 0px 0px 10px #0077b6;
-}
-
 h2 {
   text-align: center;
   color: #c2185b;
@@ -53,7 +44,7 @@ input[type="date"] {
 }
 
 button {
-  background-color: #d63384;
+  background-color: var(--color-pink);
   color: white;
   border: none;
   cursor: pointer;
@@ -65,7 +56,7 @@ button:hover {
 }
 
 .clear-button {
-  background-color: #0077b6;
+  background-color: var(--color-blue);
 }
 
 .clear-button:hover {
@@ -116,27 +107,15 @@ th {
 .currency {
   text-align: center;
 }
-.transactionTable tbody tr:nth-child(even) {
+.transactionTable tbody tr {
   background: linear-gradient(to top, #e0f7fa, #fff0f6);
 }
-.transactionTable tbody tr:nth-child(odd) {
-  background: linear-gradient(to top, #e0f7fa, #fff0f6);
-}
+
 .transactionTable tbody tr:nth-child(even) .deleteTransaction-btn {
   background-color: #479ccb;
 }
 .transactionTable tbody tr:nth-child(odd) .deleteTransaction-btn {
   background-color: #d878a8;
-}
-
-.thuchi-header,
-.thuchi__navbar {
-  display: flex;
-  justify-content: flex-start;
-  gap: 20px;
-}
-.thuchi-header {
-  margin-bottom: 20px;
 }
 
 @media (max-width: 480px) {

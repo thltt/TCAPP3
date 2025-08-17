@@ -93,7 +93,12 @@ function renderTable(transactions, startingBalance = 0) {
   transactions.forEach((t, index) => {
     const row = tableBody.insertRow(-1);
     const amount = parseFloat(t.amount) || 0;
-    const formattedDate = t.date ? t.date.slice(0, 10) : "";
+    const formattedDate = t.date
+      ? (() => {
+          const [year, month, day] = t.date.slice(0, 10).split("-");
+          return `${parseInt(day)}-${parseInt(month)}-${year}`;
+        })()
+      : "";
 
     row.innerHTML = `
       <td>${formattedDate}</td>
