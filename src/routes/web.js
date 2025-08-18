@@ -9,6 +9,10 @@ const {
   getTransactions,
   getCountTransactions,
   deleteTransactions,
+  getAllTrips,
+  addTrip,
+  deleteTrip,
+  updateTrip,
 } = require("../controllers/homeController");
 
 // API giữ awake
@@ -31,5 +35,17 @@ router.get("/api/transactions/count", getCountTransactions);
 
 // API xóa giao dịch
 router.delete("/api/transactions/:id", deleteTransactions);
+
+// API lấy tất cả phiếu chuyến
+router.get("/api/trips", getAllTrips);
+
+// API thêm  phiếu chuyến
+router.post("/api/trips", addTrip);
+
+// API cập nhật phiếu chuyến
+router.put("/api/trips/:id", updateTrip);
+
+// API xóa phiếu chuyến
+router.delete("/api/trips/:id", deleteTrip);
 
 module.exports = router;

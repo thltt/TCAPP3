@@ -22,5 +22,5 @@ app.use((err, req, res, next) => {
 
 // Khởi động server
 app.listen(port, () => {
-  console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
+  console.log(`🚀 Server đang chạy`);
 });
