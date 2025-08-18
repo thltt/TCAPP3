@@ -3,12 +3,14 @@ const router = express.Router();
 
 const {
   getAwake,
+  // Thu Chi
   getStartingBalance,
   postStartingBalance,
   postTransactions,
   getTransactions,
   getCountTransactions,
   deleteTransactions,
+  // Phiếu Chuyến
   getAllTrips,
   addTrip,
   deleteTrip,
@@ -17,6 +19,8 @@ const {
 
 // API giữ awake
 router.get("/health", getAwake);
+
+// ==== Thu Chi =====
 
 // API lấy giá trị tồn đầu
 router.get("/api/starting-balance", getStartingBalance);
@@ -35,6 +39,8 @@ router.get("/api/transactions/count", getCountTransactions);
 
 // API xóa giao dịch
 router.delete("/api/transactions/:id", deleteTransactions);
+
+// ==== Phiếu Chuyến =======
 
 // API lấy tất cả phiếu chuyến
 router.get("/api/trips", getAllTrips);

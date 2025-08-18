@@ -1,5 +1,7 @@
 const pool = require("../config/database");
 
+// ===== Thu Chi =====
+
 // lấy giá trị tồn đầu Thu Chi
 const getAmountStartingBalance = async () => {
   const [rows] = await pool.query("SELECT starting_balance FROM settings WHERE id = 1");
@@ -40,11 +42,60 @@ const deleteTransaction = async (id) => {
   return result.affectedRows;
 };
 
+// === Phiếu chuyến ====
+
+// lấy chuyến
+const getTrips = async () => {
+  const [rows] = await pool.query("SELECT * FROM phieuchuyen ORDER BY ngay DESC");
+  return rows;
+};
+
+// thêm phiếu chuyến
+const insertTrip = async ({ ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu }) => {
+  const sql = `INSERT INTO phieuchuyen 
+    (ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const [result] = await pool.query(sql, [ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu]);
+  return result.insertId;
+};
+
+// xóa phiếu chuyến
+const removeTrip = async (id) => {
+  const [result] = await pool.query("DELETE FROM phieuchuyen WHERE id = ?", [id]);
+  return result.affectedRows;
+};
+
+// cập nhật phiếu chuyến
+const updateTripById = async (id, { ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu }) => {
+  const sql = `UPDATE phieuchuyen SET 
+    ngay=?, so_chuyen=?, cong_ty=?, cung_duong=?, so_khoi=?, don_gia=?, so_tien=?, tinh_trang=?, ghi_chu=? 
+    WHERE id=?`;
+  const [result] = await pool.query(sql, [
+    ngay,
+    so_chuyen,
+    cong_ty,
+    cung_duong,
+    so_khoi,
+    don_gia,
+    so_tien,
+    tinh_trang,
+    ghi_chu,
+    id,
+  ]);
+  return result.affectedRows;
+};
+
 module.exports = {
+  // Thu Chi
   getAmountStartingBalance,
   updateStartingBalance,
   addTransaction,
   getTransactionsList,
   countTransactions,
   deleteTransaction,
+  // Phiếu Chuyến
+  getTrips,
+  insertTrip,
+  removeTrip,
+  updateTripById,
 };

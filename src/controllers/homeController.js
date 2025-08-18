@@ -7,12 +7,15 @@ const {
   getTransactionsList,
   countTransactions,
   deleteTransaction,
+  getTrips,
 } = require("../services/CRUD");
 
 // Controller giữ awake
 const getAwake = (req, res) => {
   res.status(200).json({ status: "ok", uptime: process.uptime(), time: new Date() });
 };
+
+// ===== Thu Chi =====
 
 // Controller lấy giá trị tồn đầu Thu Chi
 const getStartingBalance = async (req, res) => {
@@ -59,52 +62,41 @@ const deleteTransactions = async (req, res) => {
   }
 };
 
+// ===== Phiếu chuyến =====
+
 // Lấy tất cả phiếu chuyến
-const getAllTrips = async (req, res, next) => {
-  const [rows] = await pool.query("SELECT * FROM phieuchuyen ORDER BY ngay DESC");
+const getAllTrips = async (req, res) => {
+  const rows = await getTrips();
   res.json(rows);
 };
 
-// Thêm phiếu chuyến
-const addTrip = async (req, res, next) => {
-  const { ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu } = req.body;
-
-  const sql = `INSERT INTO phieuchuyen 
-    (ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-  await pool.query(sql, [ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu]);
+const addTrip = async (req, res) => {
+  await insertTrip(req.body);
   res.json({ message: "Thêm thành công" });
 };
 
-// Xoá phiếu chuyến
-const deleteTrip = async (req, res, next) => {
+const deleteTrip = async (req, res) => {
   const { id } = req.params;
-  await pool.query("DELETE FROM phieuchuyen WHERE id = ?", [id]);
-  res.json({ message: "Xoá thành công" });
+  await removeTrip(id);
+  res.json({ message: "Xóa thành công" });
 };
 
-// Cập nhật phiếu chuyến
-const updateTrip = async (req, res, next) => {
+const updateTrip = async (req, res) => {
   const { id } = req.params;
-  const { ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu } = req.body;
-
-  const sql = `UPDATE phieuchuyen SET 
-    ngay=?, so_chuyen=?, cong_ty=?, cung_duong=?, so_khoi=?, don_gia=?, so_tien=?, tinh_trang=?, ghi_chu=? 
-    WHERE id=?`;
-
-  await pool.query(sql, [ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu, id]);
+  await updateTripById(id, req.body);
   res.json({ message: "Cập nhật thành công" });
 };
 
 module.exports = {
   getAwake,
+  // Thu Chi
   getStartingBalance,
   postStartingBalance,
   postTransactions,
   getTransactions,
   getCountTransactions,
   deleteTransactions,
+  // Phiếu Chuyến
   getAllTrips,
   addTrip,
   deleteTrip,

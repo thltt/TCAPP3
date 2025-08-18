@@ -191,7 +191,7 @@ function exportToExcel() {
 
   Object.keys(ws).forEach((cell) => {
     if (cell[0] === "!") return;
-    const raw = ws[cell].v;
+    const raw = ws[cell].v || "";
 
     if (typeof raw === "string" && raw.match(/^\d{1,3}(\.\d{3})*$/)) {
       const numberValue = Number(raw.replace(/\./g, ""));

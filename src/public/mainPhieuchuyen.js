@@ -90,3 +90,27 @@ async function deleteTrip(id) {
 function clearInputs() {
   document.querySelectorAll("input, select").forEach((el) => (el.value = ""));
 }
+
+//  Xuất excel
+function exportToExcel() {
+  const table = document.getElementById("transTable");
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.table_to_sheet(table, { raw: true });
+
+  Object.keys(ws).forEach((cell) => {
+    if (cell[0] === "!") return;
+    const raw = ws[cell].v || "";
+
+    if (typeof raw === "string" && raw.match(/^\d{1,3}(\.\d{3})*$/)) {
+      const numberValue = Number(raw.replace(/\./g, ""));
+      ws[cell].v = numberValue;
+      ws[cell].t = "n";
+    }
+  });
+
+  XLSX.utils.book_append_sheet(wb, ws, "Phieu_Chuyen");
+  XLSX.writeFile(wb, `Phieu_Chuyen.xlsx`);
+}
+
+// Khi load trang
+window.onload = loadData;
