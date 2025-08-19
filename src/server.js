@@ -6,6 +6,7 @@ require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 const port = process.env.PORT || 8050;
+const hostname = process.env.HOST_NAME;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -21,6 +22,6 @@ app.use((err, req, res, next) => {
 });
 
 // Khởi động server
-app.listen(port, () => {
+app.listen(port, hostname, () => {
   console.log(`🚀 Server đang chạy`);
 });

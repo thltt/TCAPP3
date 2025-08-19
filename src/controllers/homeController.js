@@ -1,13 +1,18 @@
 const pool = require("../config/database");
 
 const {
+  // Thu Chi
   getAmountStartingBalance,
   updateStartingBalance,
   addTransaction,
   getTransactionsList,
   countTransactions,
   deleteTransaction,
+  // Phiếu Chuyến
   getTrips,
+  insertTrip,
+  removeTrip,
+  updateTripById,
 } = require("../services/CRUD");
 
 // Controller giữ awake
@@ -70,17 +75,20 @@ const getAllTrips = async (req, res) => {
   res.json(rows);
 };
 
+// Thêm Phiếu chuyến
 const addTrip = async (req, res) => {
   await insertTrip(req.body);
   res.json({ message: "Thêm thành công" });
 };
 
+// Xóa Phiếu chuyến
 const deleteTrip = async (req, res) => {
   const { id } = req.params;
   await removeTrip(id);
   res.json({ message: "Xóa thành công" });
 };
 
+// Cập nhật Phiếu chuyến
 const updateTrip = async (req, res) => {
   const { id } = req.params;
   await updateTripById(id, req.body);

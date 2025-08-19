@@ -8,7 +8,7 @@ const pool = mysql.createPool({
   password: process.env.MYSQL_ADDON_PASSWORD,
   database: process.env.MYSQL_ADDON_DB,
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: 5,
   queueLimit: 0,
   multipleStatements: true,
   maxIdle: 10,
@@ -17,14 +17,27 @@ const pool = mysql.createPool({
   keepAliveInitialDelay: 0,
 });
 
+// Khi pool tạo connection mới -> set timeout ngắn
+pool.on("connection", async (connection) => {
+  const conn = connection.promise();
+  try {
+    await conn.query("SET SESSION wait_timeout=60");
+    await conn.query("SET SESSION interactive_timeout=60");
+  } catch (err) {
+    console.error("❌ Lỗi khi set wait_timeout:", err.message);
+  }
+});
+
 // Kiểm tra kết nối
-pool.getConnection((err, connection) => {
-  if (err) {
+(async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log("✅ Đã kết nối MySQL qua pool!");
+    connection.release();
+  } catch (err) {
     console.error("❌ Lỗi kết nối MySQL:", err);
     process.exit(1);
   }
-  console.log("✅ Đã kết nối MySQL qua pool!");
-  connection.release();
-});
+})();
 
 module.exports = pool;
