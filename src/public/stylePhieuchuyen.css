@@ -124,12 +124,12 @@ th {
   font-weight: 600;
 }
 
-.currency.positive {
-  color: #2e7d32; /* xanh lá */
+.currency.green {
+  color: #2e7d32;
 }
 
-.currency.negative {
-  color: #c62828; /* đỏ */
+.currency.red {
+  color: #c62828;
 }
 
 @media (max-width: 480px) {
@@ -140,18 +140,18 @@ th {
   h2 {
     font-size: 18px;
     margin-bottom: 20px;
-    text-align: left; /* tiêu đề về trái */
+    text-align: center; /* tiêu đề về trái */
   }
 
   .input-row {
     flex-direction: column;
     gap: 8px;
-    width: 100%; /* full chiều ngang */
+    width: 100%;
   }
 
   .input-group {
     display: flex;
-    flex-direction: row; /* label bên trái, input bên phải */
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -185,18 +185,19 @@ th {
     padding: 6px;
   }
 
-  table {
+  .transTable {
     display: block;
     overflow-x: auto;
-    white-space: nowrap;
+    white-space: normal;
     font-size: 12px;
-    width: 100%;
+    width: 100vw;
   }
 
   th,
   td {
     padding: 3px;
-    text-align: left; /* nội dung ô cũng về trái */
+    text-align: center;
+    vertical-align: middle;
   }
 
   .delete-btn {

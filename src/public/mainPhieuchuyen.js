@@ -1,7 +1,15 @@
 const API_TRIPS = "https://tcapp2.onrender.com/api/trips";
 
 // Load danh sách phiếu chuyến khi mở trang
-window.onload = fetchTrips;
+window.onload = () => {
+  fetchTrips();
+  setupTinhTrangListener();
+};
+
+// Định dạng số tiền
+function formatCurrency(number) {
+  return Number(number || "").toLocaleString("vi-VN");
+}
 
 async function fetchTrips() {
   try {
@@ -20,7 +28,6 @@ function renderTable(trips) {
   tbody.innerHTML = "";
 
   trips.forEach((t) => {
-    // Định dạng ngày dd-mm-yyyy
     const formattedDate = t.ngay
       ? (() => {
           const [year, month, day] = t.ngay.slice(0, 10).split("-");
@@ -28,19 +35,14 @@ function renderTable(trips) {
         })()
       : "";
 
-    // Định dạng số khối (dùng dấu phẩy cho phần thập phân)
-    const formattedSoKhoi = t.so_khoi ? t.so_khoi.toString().replace(".", ",") : "0";
-
-    // Định dạng đơn giá & số tiền (dùng dấu chấm phân tách nghìn, không thập phân)
-    const formatCurrency = (num) => Number(num).toLocaleString("vi-VN", { maximumFractionDigits: 0 });
-
+    const formattedSoKhoi = formatCurrency(t.so_khoi);
     const formattedDonGia = formatCurrency(t.don_gia);
     const formattedSoTien = formatCurrency(t.so_tien);
 
-    // Xác định class cho số tiền
+    // Xác định class màu theo tình trạng
     let amountClass = "currency";
-    if (t.so_tien > 0) amountClass += " positive";
-    else if (t.so_tien < 0) amountClass += " negative";
+    if (t.tinh_trang.toLowerCase() === "nợ") amountClass += " red";
+    else if (t.tinh_trang.toLowerCase() === "đã thanh toán") amountClass += " green";
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -59,6 +61,23 @@ function renderTable(trips) {
   });
 }
 
+// Gắn sự kiện khi thay đổi tình trạng
+function setupTinhTrangListener() {
+  const tinhTrangSelect = document.getElementById("tinhTrangInput");
+  tinhTrangSelect.addEventListener("change", () => {
+    const container = document.getElementById("paidAmountContainer");
+
+    if (tinhTrangSelect.value.toLowerCase() === "đã thanh toán") {
+      container.innerHTML = `
+        <label for="paidAmountInput">Số tiền thanh toán:</label>
+        <input type="number" id="paidAmountInput" step="1000" />
+      `;
+    } else {
+      container.innerHTML = ""; // xóa nếu chọn lại "NỢ"
+    }
+  });
+}
+
 // Thêm phiếu chuyến
 async function addRow() {
   const ngay = document.getElementById("dateInput").value;
@@ -70,9 +89,24 @@ async function addRow() {
   const tinh_trang = document.getElementById("tinhTrangInput").value;
   const ghi_chu = document.getElementById("ghiChuInput").value;
 
-  const so_tien = so_chuyen * so_khoi * don_gia;
+  // Nếu có nhập số tiền thanh toán thì lấy, nếu không thì tự tính
+  const paidInput = document.getElementById("paidAmountInput");
+  let so_tien = so_chuyen * so_khoi * don_gia;
+  if (paidInput && paidInput.value.trim() !== "") {
+    so_tien = parseFloat(paidInput.value) || so_tien;
+  }
 
-  const trip = { ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu };
+  const trip = {
+    ngay,
+    so_chuyen,
+    cong_ty,
+    cung_duong,
+    so_khoi,
+    don_gia,
+    so_tien,
+    tinh_trang,
+    ghi_chu,
+  };
 
   try {
     const res = await fetch(API_TRIPS, {
@@ -104,6 +138,7 @@ async function deleteTrip(id) {
 // Xóa/Reset input
 function clearInputs() {
   document.querySelectorAll("input, select").forEach((el) => (el.value = ""));
+  document.getElementById("paidAmountContainer").innerHTML = "";
 }
 
 // Xuất excel

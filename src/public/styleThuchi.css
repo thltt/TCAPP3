@@ -189,7 +189,7 @@ th {
   .transactionTable {
     display: block;
     overflow-x: auto;
-    white-space: wrap;
+    white-space: normal;
     font-size: 12px;
   }
   .deleteTransaction-btn {

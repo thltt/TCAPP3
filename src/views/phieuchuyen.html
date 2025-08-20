@@ -44,7 +44,7 @@
 
       <div class="input-group">
         <label for="soKhoiInput">Số khối:</label>
-        <input type="number" id="soKhoiInput" step="0.01" />
+        <input type="number" id="soKhoiInput" step="0.1" />
       </div>
 
       <div class="input-group">
@@ -60,6 +60,8 @@
         </select>
       </div>
 
+      <div class="input-group" id="paidAmountContainer"></div>
+
       <div class="input-group">
         <label for="ghiChuInput">Ghi chú:</label>
         <input type="text" id="ghiChuInput" />
@@ -72,23 +74,25 @@
       </div>
     </div>
 
-    <table class="transTable" id="transTable">
-      <thead>
-        <tr>
-          <th>Ngày</th>
-          <th>Tổng Chuyến</th>
-          <th>Công ty</th>
-          <th>Cung đường</th>
-          <th>Số khối</th>
-          <th>Đơn giá</th>
-          <th>Số tiền</th>
-          <th>Tình trạng</th>
-          <th>Ghi chú</th>
-          <th>Xóa</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="containerTable">
+      <table class="transTable" id="transTable">
+        <thead>
+          <tr>
+            <th>Ngày</th>
+            <th>Tổng Chuyến</th>
+            <th>Công ty</th>
+            <th>Cung đường</th>
+            <th>Số khối</th>
+            <th>Đơn giá</th>
+            <th>Số tiền</th>
+            <th>Tình trạng</th>
+            <th>Ghi chú</th>
+            <th>Xóa</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </body>
   <script src="../public/mainPhieuchuyen.js"></script>
 </html>
