@@ -46,7 +46,7 @@ const deleteTransaction = async (id) => {
 
 // lấy chuyến
 const getTrips = async () => {
-  const [rows] = await pool.query("SELECT * FROM phieuchuyen ORDER BY ngay DESC");
+  const [rows] = await pool.query("SELECT * FROM phieuchuyen ORDER BY ngay DESC, id DESC");
   return rows;
 };
 
@@ -85,6 +85,14 @@ const updateTripById = async (id, { ngay, so_chuyen, cong_ty, cung_duong, so_kho
   return result.affectedRows;
 };
 
+// === Công Nợ ====
+
+// lấy tất cả công nợ
+const getDebts = async () => {
+  const [rows] = await pool.query("SELECT * FROM congno ORDER BY ngay DESC, id DESC");
+  return rows;
+};
+
 module.exports = {
   // Thu Chi
   getAmountStartingBalance,
@@ -98,4 +106,6 @@ module.exports = {
   insertTrip,
   removeTrip,
   updateTripById,
+  // Công nợ
+  getDebts,
 };

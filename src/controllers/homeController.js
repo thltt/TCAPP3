@@ -13,6 +13,8 @@ const {
   insertTrip,
   removeTrip,
   updateTripById,
+  // Công nợ
+  getDebts,
 } = require("../services/CRUD");
 
 // Controller giữ awake
@@ -95,6 +97,12 @@ const updateTrip = async (req, res) => {
   res.json({ message: "Cập nhật thành công" });
 };
 
+// ===== Công nợ =====
+const getAllDebts = async (req, res) => {
+  const rows = await getDebts();
+  res.json(rows);
+};
+
 module.exports = {
   getAwake,
   // Thu Chi
@@ -109,4 +117,6 @@ module.exports = {
   addTrip,
   deleteTrip,
   updateTrip,
+  // Công nợ
+  getAllDebts,
 };

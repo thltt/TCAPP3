@@ -15,6 +15,8 @@ const {
   addTrip,
   deleteTrip,
   updateTrip,
+  // Công nợ
+  getAllDebts,
 } = require("../controllers/homeController");
 
 // API giữ awake
@@ -53,5 +55,10 @@ router.put("/api/trips/:id", updateTrip);
 
 // API xóa phiếu chuyến
 router.delete("/api/trips/:id", deleteTrip);
+
+// ==== Công Nợ =======
+
+// API lấy tất cả công nợ
+router.get("/api/debt", getAllDebts);
 
 module.exports = router;

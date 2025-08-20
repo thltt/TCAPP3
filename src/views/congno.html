@@ -4,22 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../public/reset.css" />
-    <link rel="stylesheet" href="../public/stylePhieuchuyen.css" />
+    <link rel="stylesheet" href="../public/styleThuchi.css" />
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-    <title>Theo dõi Phiếu Chuyến</title>
+    <title>Theo dõi Công nợ</title>
   </head>
   <body>
     <header class="thuchi-header">
       <nav>
         <ul class="thuchi__navbar">
           <li><a href="../../index.html">Về trang chủ</a></li>
-          <li><a href="../views/congno.html">Công nợ</a></li>
+          <li><a href="../views/phieuchuyen.html">Phiếu chuyến</a></li>
           <li><a href="../views/thuchi.html">Theo dõi thu chi</a></li>
         </ul>
       </nav>
     </header>
 
-    <h2>THEO DÕI PHIẾU CHUYẾN</h2>
+    <h2>THEO DÕI CÔNG NỢ</h2>
 
     <div class="input-row">
       <div class="input-group">
@@ -28,39 +28,22 @@
       </div>
 
       <div class="input-group">
-        <label for="soChuyenInput">Tổng số chuyến:</label>
-        <input type="number" id="soChuyenInput" />
+        <label for="noiDungInput">Nội dung:</label>
+        <input type="text" id="noiDungInput" />
       </div>
 
       <div class="input-group">
-        <label for="congTyInput">Công ty:</label>
-        <input type="text" id="congTyInput" />
-      </div>
-
-      <div class="input-group">
-        <label for="cungDuongInput">Cung đường:</label>
-        <input type="text" id="cungDuongInput" />
-      </div>
-
-      <div class="input-group">
-        <label for="soKhoiInput">Số khối:</label>
-        <input type="number" id="soKhoiInput" step="0.1" />
-      </div>
-
-      <div class="input-group">
-        <label for="donGiaInput">Đơn giá:</label>
-        <input type="number" id="donGiaInput" step="1000" />
-      </div>
-
-      <div class="input-group">
-        <label for="tinhTrangInput">Tình trạng:</label>
-        <select id="tinhTrangInput">
+        <label for="transTypeInput">Loại giao dịch:</label>
+        <select id="transTypeInput">
           <option value="NỢ">NỢ</option>
           <option value="ĐÃ THANH TOÁN">ĐÃ THANH TOÁN</option>
         </select>
       </div>
 
-      <div class="input-group" id="paidAmountContainer"></div>
+      <div class="input-group">
+        <label for="amoutInput">Số tiền:</label>
+        <input type="number" id="amoutInput" step="1000" />
+      </div>
 
       <div class="input-group">
         <label for="ghiChuInput">Ghi chú:</label>
@@ -74,18 +57,14 @@
       </div>
     </div>
 
-    <div class="containerTable">
-      <table class="transTable" id="transTable">
+    <div class="containertransDebtTable">
+      <table class="transDebtTable" id="transDebtTable">
         <thead>
           <tr>
             <th>Ngày</th>
-            <th>Tổng Chuyến</th>
-            <th>Công ty</th>
-            <th>Cung đường</th>
-            <th>Số khối</th>
-            <th>Đơn giá</th>
+            <th>Nội dung</th>
+            <th>Loại giao dịch</th>
             <th>Số tiền</th>
-            <th>Tình trạng</th>
             <th>Ghi chú</th>
             <th>Xóa</th>
           </tr>
@@ -94,5 +73,5 @@
       </table>
     </div>
   </body>
-  <script src="../public/mainPhieuchuyen.js"></script>
+  <script src="../public/mainCongno.js"></script>
 </html>
