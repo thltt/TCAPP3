@@ -119,19 +119,6 @@ th {
   transition: 0.2s ease;
 }
 
-/* --- Đổi màu số tiền --- */
-.currency {
-  font-weight: 600;
-}
-
-.currency.green {
-  color: #2e7d32;
-}
-
-.currency.red {
-  color: #c62828;
-}
-
 @media (max-width: 480px) {
   body {
     padding: 10px;

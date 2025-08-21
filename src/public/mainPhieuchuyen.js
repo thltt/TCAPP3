@@ -39,10 +39,8 @@ function renderTable(trips) {
     const formattedDonGia = formatCurrency(t.don_gia);
     const formattedSoTien = formatCurrency(t.so_tien);
 
-    // Xác định class màu theo tình trạng
     let amountClass = "currency";
-    if (t.tinh_trang.toLowerCase() === "nợ") amountClass += " red";
-    else if (t.tinh_trang.toLowerCase() === "đã thanh toán") amountClass += " green";
+    t.tinh_trang.toLowerCase() === "nợ" ? (amountClass += " red") : (amountClass += " green");
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -73,7 +71,7 @@ function setupTinhTrangListener() {
         <input type="number" id="paidAmountInput" step="1000" />
       `;
     } else {
-      container.innerHTML = ""; // xóa nếu chọn lại "NỢ"
+      container.innerHTML = "";
     }
   });
 }
@@ -115,7 +113,6 @@ async function addRow() {
       body: JSON.stringify(trip),
     });
     if (!res.ok) throw new Error("Không thể thêm phiếu chuyến");
-    clearInputs();
     fetchTrips();
   } catch (err) {
     console.error("❌ Lỗi khi thêm phiếu chuyến:", err);

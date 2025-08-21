@@ -93,6 +93,22 @@ const getDebts = async () => {
   return rows;
 };
 
+// thêm công nợ
+const insertDebt = async ({ ngay, noi_dung, loai_gd, so_tien, ghi_chu }) => {
+  const [result] = await pool.query(
+    `INSERT INTO congno (ngay, noi_dung, loai_gd, so_tien, ghi_chu) 
+     VALUES (?, ?, ?, ?, ?)`,
+    [ngay, noi_dung, loai_gd, so_tien, ghi_chu]
+  );
+  return result.insertId;
+};
+
+// xóa công nợ
+const removeDebt = async (id) => {
+  const [result] = await pool.query("DELETE FROM congno WHERE id = ?", [id]);
+  return result.affectedRows;
+};
+
 module.exports = {
   // Thu Chi
   getAmountStartingBalance,
@@ -108,4 +124,6 @@ module.exports = {
   updateTripById,
   // Công nợ
   getDebts,
+  insertDebt,
+  removeDebt,
 };

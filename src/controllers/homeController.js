@@ -15,6 +15,8 @@ const {
   updateTripById,
   // Công nợ
   getDebts,
+  insertDebt,
+  removeDebt,
 } = require("../services/CRUD");
 
 // Controller giữ awake
@@ -40,7 +42,7 @@ const postStartingBalance = async (req, res) => {
 // Controller thêm giao dịch Thu Chi
 const postTransactions = async (req, res) => {
   const id = await addTransaction(req.body);
-  res.json({ id });
+  res.json({ message: "Thêm thành công", id });
 };
 
 // Controller lấy giao dịch (có phân trang) Thu Chi
@@ -79,15 +81,17 @@ const getAllTrips = async (req, res) => {
 
 // Thêm Phiếu chuyến
 const addTrip = async (req, res) => {
-  await insertTrip(req.body);
-  res.json({ message: "Thêm thành công" });
+  const id = await insertTrip(req.body);
+  res.json({ message: "Thêm thành công", id });
 };
 
 // Xóa Phiếu chuyến
 const deleteTrip = async (req, res) => {
   const { id } = req.params;
-  await removeTrip(id);
-  res.json({ message: "Xóa thành công" });
+  const affected = await removeTrip(id);
+  res.status(affected === 0 ? 404 : 200).json({
+    message: affected === 0 ? "Không tìm thấy phiếu chuyến để xóa." : "Xóa thành công",
+  });
 };
 
 // Cập nhật Phiếu chuyến
@@ -98,11 +102,27 @@ const updateTrip = async (req, res) => {
 };
 
 // ===== Công nợ =====
+
+// lấy tất cả công nợ
 const getAllDebts = async (req, res) => {
   const rows = await getDebts();
   res.json(rows);
 };
 
+// thêm công nợ
+const addDebt = async (req, res) => {
+  const id = await insertDebt(req.body);
+  res.json({ message: "Thêm thành công", id });
+};
+
+// xóa công nợ
+const deleteDebt = async (req, res) => {
+  const { id } = req.params;
+  const affected = await removeDebt(id);
+  res.status(affected === 0 ? 404 : 200).json({
+    message: affected === 0 ? "Không tìm thấy công nợ để xóa." : "Xóa thành công",
+  });
+};
 module.exports = {
   getAwake,
   // Thu Chi
@@ -119,4 +139,6 @@ module.exports = {
   updateTrip,
   // Công nợ
   getAllDebts,
+  addDebt,
+  deleteDebt,
 };

@@ -148,3 +148,14 @@ a:hover {
 .thuchi-header {
   margin-bottom: 20px;
 }
+.currency {
+  font-weight: 550;
+}
+
+.currency.green {
+  color: #2e7d32;
+}
+
+.currency.red {
+  color: #c62828;
+}
