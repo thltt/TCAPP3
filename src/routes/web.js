@@ -19,6 +19,9 @@ const {
   getAllDebts,
   addDebt,
   deleteDebt,
+  // lấy tổng
+  getAllSummaryDebts,
+  getAllSummaryTrips,
 } = require("../controllers/homeController");
 
 // API giữ awake
@@ -49,6 +52,9 @@ router.delete("/api/transactions/:id", deleteTransactions);
 // API lấy tất cả phiếu chuyến
 router.get("/api/trips", getAllTrips);
 
+// API lấy tổng chuyển cty còn nợ/đã trả
+router.get("/api/trips/summary", getAllSummaryTrips);
+
 // API thêm  phiếu chuyến
 router.post("/api/trips", addTrip);
 
@@ -62,6 +68,9 @@ router.delete("/api/trips/:id", deleteTrip);
 
 // API lấy tất cả công nợ
 router.get("/api/debts", getAllDebts);
+
+// API lấy tổng công nợ chưa trả/đã trả
+router.get("/api/debts/summary", getAllSummaryDebts);
 
 // API thêm công nợ
 router.post("/api/debts", addDebt);

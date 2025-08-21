@@ -88,3 +88,13 @@ function clearInputs() {
   document.querySelectorAll("input, select").forEach((el) => (el.value = ""));
   document.getElementById("transTypeInput").value = "NỢ";
 }
+
+// xuất Excel
+function exportToExcel() {
+  const table = document.getElementById("transDebtTable");
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.table_to_sheet(table, { raw: true });
+
+  XLSX.utils.book_append_sheet(wb, ws, "Cong_No");
+  XLSX.writeFile(wb, `Cong_No.xlsx`);
+}

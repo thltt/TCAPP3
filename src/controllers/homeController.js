@@ -17,6 +17,9 @@ const {
   getDebts,
   insertDebt,
   removeDebt,
+  // lấy tổng
+  getSummaryDebts,
+  getSummaryTrips,
 } = require("../services/CRUD");
 
 // Controller giữ awake
@@ -79,6 +82,12 @@ const getAllTrips = async (req, res) => {
   res.json(rows);
 };
 
+// lấy tổng phiếu chuyến
+const getAllSummaryTrips = async (req, res) => {
+  const summary = await getSummaryTrips();
+  res.json(summary);
+};
+
 // Thêm Phiếu chuyến
 const addTrip = async (req, res) => {
   const id = await insertTrip(req.body);
@@ -107,6 +116,12 @@ const updateTrip = async (req, res) => {
 const getAllDebts = async (req, res) => {
   const rows = await getDebts();
   res.json(rows);
+};
+
+// lấy tổng công nợ
+const getAllSummaryDebts = async (req, res) => {
+  const summary = await getSummaryDebts();
+  res.json(summary);
 };
 
 // thêm công nợ
@@ -141,4 +156,7 @@ module.exports = {
   getAllDebts,
   addDebt,
   deleteDebt,
+  // lấy tổng
+  getAllSummaryDebts,
+  getAllSummaryTrips,
 };

@@ -3,16 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="./src/public/reset.css" /> -->
+    <link rel="stylesheet" href="./src/public/style.css" />
+    <script src="./src/public/main.js"></script>
     <title>Theo dõi chi phí</title>
   </head>
   <body>
-    <div class="container">
-      <h2 class="maintitle">Vui lòng lựa chọn chức năng</h2>
-      <ul>
-        <li><a href="./src/views/phieuchuyen.html">Phiếu chuyến</a></li>
-        <li><a href="./src/views/congno.html">Công nợ</a></li>
-        <li><a href="./src/views/thuchi.html">Thu chi</a></li>
-      </ul>
-    </div>
+    <h2 class="maintitle">Vui lòng lựa chọn chức năng</h2>
+    <ul>
+      <li><a href="./src/views/phieuchuyen.html">Phiếu chuyến</a></li>
+      <li><a href="./src/views/congno.html">Công nợ</a></li>
+      <li><a href="./src/views/thuchi.html">Thu chi</a></li>
+    </ul>
+
+    <main class="main">
+      <div class="totalTable">
+        <h2>BÁO CÁO TỔNG QUAN</h2>
+        <table class="totalPhieuChuyen">
+          <tbody>
+            <tr>
+              <td>TỔNG CÔNG TY CHƯA THANH TOÁN:</td>
+              <td id="company_not_pay">50.000 VNĐ</td>
+            </tr>
+            <tr>
+              <td>TỔNG CÔNG TY ĐÃ THANH TOÁN:</td>
+              <td id="company_payed">0 VNĐ</td>
+            </tr>
+            <tr>
+              <td>CÒN LẠI:</td>
+              <td id="phieuchuyen_remain">50.000 VNĐ</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="totalCongNo">
+          <tbody>
+            <tr>
+              <td>TỔNG NỢ PHẢI TRẢ:</td>
+              <td id="debt_must_pay">50.000 VNĐ</td>
+            </tr>
+            <tr>
+              <td>TỔNG NỢ ĐÃ TRẢ:</td>
+              <td id="debt_payed">0 VNĐ</td>
+            </tr>
+            <tr>
+              <td>CÒN LẠI:</td>
+              <td id="congno_remain">50.000 VNĐ</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="totalChenhlech">
+          <tbody>
+            <tr>
+              <td>CHÊNH LỆCH:</td>
+              <td id="total_differ">100 VNĐ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
   </body>
 </html>

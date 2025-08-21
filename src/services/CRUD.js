@@ -50,6 +50,15 @@ const getTrips = async () => {
   return rows;
 };
 
+// lấy tổng phiếu chuyến đã trả/chưa trả
+const getSummaryTrips = async () => {
+  const [summary] = await pool.query(`SELECT
+	SUM(CASE WHEN tinh_trang='NỢ' THEN so_tien ELSE 0 END) AS cty_no,
+	SUM(CASE WHEN tinh_trang='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS cty_tra
+  FROM phieuchuyen`);
+  return summary;
+};
+
 // thêm phiếu chuyến
 const insertTrip = async ({ ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu }) => {
   const sql = `INSERT INTO phieuchuyen 
@@ -93,6 +102,15 @@ const getDebts = async () => {
   return rows;
 };
 
+// lấy tổng công nợ chưa trả/đã trả
+const getSummaryDebts = async () => {
+  const [summary] = await pool.query(`SELECT
+  SUM(CASE WHEN loai_gd='NỢ' THEN so_tien ELSE 0 END) AS tong_no,
+  SUM(CASE WHEN loai_gd='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS tong_da_tra
+  FROM congno`);
+  return summary;
+};
+
 // thêm công nợ
 const insertDebt = async ({ ngay, noi_dung, loai_gd, so_tien, ghi_chu }) => {
   const [result] = await pool.query(
@@ -126,4 +144,7 @@ module.exports = {
   getDebts,
   insertDebt,
   removeDebt,
+  // Gửi tổng
+  getSummaryDebts,
+  getSummaryTrips,
 };
