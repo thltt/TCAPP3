@@ -135,6 +135,7 @@ async function deleteTrip(id) {
 // Xóa/Reset input
 function clearInputs() {
   document.querySelectorAll("input, select").forEach((el) => (el.value = ""));
+  document.getElementById("tinhTrangInput").value = "NỢ";
   document.getElementById("paidAmountContainer").innerHTML = "";
 }
 
