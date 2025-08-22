@@ -1,14 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Inter", sans-serif;
-  background: linear-gradient(to left, #e0f7fa, #fff0f6);
-  margin: 0;
-  padding: 20px;
-}
-
 h2 {
   text-align: center;
   color: #c2185b;
@@ -23,12 +12,6 @@ h2 {
   gap: 10px;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
 
 .input-row label {
@@ -50,7 +33,7 @@ input[type="date"] {
 }
 
 button {
-  background-color: #e91e63;
+  background-color: var(--color-pink);
   color: white;
   border: none;
   cursor: pointer;
@@ -61,13 +44,8 @@ button:hover {
   background-color: #ad1457;
 }
 
-.button-group {
-  display: flex;
-  gap: 10px;
-}
-
 .clear-button {
-  background-color: #2196f3;
+  background-color: var(--color-blue);
 }
 
 .clear-button:hover {
@@ -97,26 +75,36 @@ th {
   font-weight: 600;
 }
 
+.start-row td {
+  text-align: center;
+  font-weight: bold;
+  background-color: #e0f7fa;
+}
+.input__startingBalance {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 20px;
+}
+.input__startingBalance input {
+  padding: 8px 15px;
+}
+.input__startingBalance button {
+  padding: 8px 20px;
+  margin-right: 50px;
+}
 .currency {
   text-align: center;
 }
-
-.transTable tbody tr {
+.transactionTable tbody tr {
   background: linear-gradient(to top, #e0f7fa, #fff0f6);
 }
 
-.transTable tbody tr:nth-child(even) .delete-btn {
+.transactionTable tbody tr:nth-child(even) .deleteTransaction-btn {
   background-color: #479ccb;
 }
-
-.transTable tbody tr:nth-child(odd) .delete-btn {
+.transactionTable tbody tr:nth-child(odd) .deleteTransaction-btn {
   background-color: #d878a8;
-}
-
-/* --- Hover row --- */
-.transTable tbody tr:hover {
-  background-color: rgba(194, 24, 91, 0.1); /* nền hồng nhạt khi hover */
-  transition: 0.2s ease;
 }
 
 @media (max-width: 480px) {
@@ -127,28 +115,24 @@ th {
   h2 {
     font-size: 18px;
     margin-bottom: 20px;
-    text-align: center; /* tiêu đề về trái */
   }
 
   .input-row {
     flex-direction: column;
     gap: 8px;
-    width: 100%;
   }
 
   .input-group {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    gap: 5px;
     width: 100%;
   }
 
   .input-group label {
-    min-width: 30%;
+    min-width: 60px;
     font-size: 12px;
     font-weight: 600;
-    text-align: left;
   }
 
   .input-group input,
@@ -156,41 +140,60 @@ th {
     flex: 1;
     font-size: 12px;
     padding: 6px;
-    width: 65%; /* chiếm phần còn lại */
   }
 
   .button-group {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    column-gap: 2%;
   }
 
   .button-group button {
     flex: 1;
+    min-width: 80px;
     font-size: 12px;
     padding: 6px;
   }
 
-  .transTable {
+  .input__startingBalance {
+    display: flex;
+    gap: 5px;
+  }
+  .input__startingBalance label {
+    display: none;
+  }
+
+  .input__startingBalance input {
+    padding: 6px;
+    font-size: 10px;
+    width: 50%;
+  }
+
+  .input__startingBalance button {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-right: 0;
+  }
+
+  .transactionTable {
     display: block;
     overflow-x: auto;
     white-space: normal;
     font-size: 12px;
-    width: 100vw;
+  }
+  .deleteTransaction-btn {
+    padding: 3px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    font-size: 10px;
+  }
+  .startingBalanceTable {
+    display: block;
+    font-size: 0.8rem;
   }
 
   th,
   td {
     padding: 3px;
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  .delete-btn {
-    padding: 3px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    font-size: 10px;
   }
 }

@@ -3,57 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="./src/public/reset.css" /> -->
-    <link rel="stylesheet" href="./src/public/style.css" />
-    <script src="./src/public/main.js"></script>
+    <link rel="stylesheet" href="./src/public/css/style.css" />
+    <script src="./src/public/js/main.js"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="./src/public/favicon/favIndex/apple-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="./src/public/favicon/favIndex/apple-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="./src/public/favicon/favIndex/apple-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="./src/public/favicon/favIndex/apple-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="./src/public/favicon/favIndex/apple-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="./src/public/favicon/favIndex//apple-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="./src/public/favicon/favIndex/apple-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="./src/public/favicon/favIndex/apple-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./src/public/favicon/favIndex/apple-icon-180x180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./src/public/favicon/favIndex/android-icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./src/public/favicon/favIndex/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="./src/public/favicon/favIndex/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./src/public/favicon/favIndex/favicon-16x16.png" />
+    <link rel="manifest" href="./src/public/favicon/favIndex/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-TileImage" content="./src/public/favicon/favIndex/ms-icon-144x144.png" />
+    <meta name="theme-color" content="#ffffff" />
     <title>Theo dõi chi phí</title>
   </head>
   <body>
-    <h2 class="maintitle">Vui lòng lựa chọn chức năng</h2>
-    <ul>
-      <li><a href="./src/views/phieuchuyen.html">Phiếu chuyến</a></li>
-      <li><a href="./src/views/congno.html">Công nợ</a></li>
-      <li><a href="./src/views/thuchi.html">Thu chi</a></li>
-    </ul>
+    <nav class="nav">
+      <h3 class="maintitle">CHỨC NĂNG</h3>
+      <ul>
+        <li><a href="./src/views/phieuchuyen.html">Phiếu chuyến</a></li>
+        <li><a href="./src/views/congno.html">Công nợ</a></li>
+        <li><a href="./src/views/thuchi.html">Thu chi</a></li>
+      </ul>
+    </nav>
 
     <main class="main">
       <div class="totalTable">
         <h2>BÁO CÁO TỔNG QUAN</h2>
-        <table class="totalPhieuChuyen">
+        <table class="report-table totalPhieuChuyen">
           <tbody>
             <tr>
               <td>TỔNG CÔNG TY CHƯA THANH TOÁN:</td>
-              <td id="company_not_pay">50.000 VNĐ</td>
+              <td class="not_pay" id="company_not_pay">50.000 VNĐ</td>
             </tr>
             <tr>
               <td>TỔNG CÔNG TY ĐÃ THANH TOÁN:</td>
-              <td id="company_payed">0 VNĐ</td>
+              <td class="paid" id="company_payed">0 VNĐ</td>
             </tr>
             <tr>
               <td>CÒN LẠI:</td>
-              <td id="phieuchuyen_remain">50.000 VNĐ</td>
+              <td class="remain" id="phieuchuyen_remain">50.000 VNĐ</td>
             </tr>
           </tbody>
         </table>
 
-        <table class="totalCongNo">
+        <table class="report-table totalCongNo">
           <tbody>
             <tr>
               <td>TỔNG NỢ PHẢI TRẢ:</td>
-              <td id="debt_must_pay">50.000 VNĐ</td>
+              <td class="not_pay" id="debt_must_pay">50.000 VNĐ</td>
             </tr>
             <tr>
               <td>TỔNG NỢ ĐÃ TRẢ:</td>
-              <td id="debt_payed">0 VNĐ</td>
+              <td class="paid" id="debt_payed">0 VNĐ</td>
             </tr>
             <tr>
               <td>CÒN LẠI:</td>
-              <td id="congno_remain">50.000 VNĐ</td>
+              <td class="remain" id="congno_remain">50.000 VNĐ</td>
             </tr>
           </tbody>
         </table>
 
-        <table class="totalChenhlech">
+        <table class="report-table totalChenhlech">
           <tbody>
             <tr>
               <td>CHÊNH LỆCH:</td>
@@ -62,6 +80,7 @@
           </tbody>
         </table>
       </div>
+      <button class="refesh-btn" onclick="location.reload(true)">Làm mới</button>
     </main>
   </body>
 </html>

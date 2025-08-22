@@ -59,7 +59,5 @@ function refreshData() {
   fetchSummaryTrips();
   fetchSummaryDebts();
 }
-
 refreshData();
-
 setInterval(refreshData, 600000);

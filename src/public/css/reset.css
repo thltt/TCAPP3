@@ -1,6 +1,11 @@
 :root {
   --color-blue: #0077b6;
   --color-pink: #d63384;
+  --shadow-color: #0000001a;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html,
@@ -89,7 +94,7 @@ video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  vertical-align: baseline;
+  vertical-align: middle;
   text-decoration: none;
 }
 /* HTML5 display-role reset for older browsers */
@@ -130,24 +135,14 @@ table {
 }
 
 /* Css riêng */
-a {
-  text-decoration: none;
-  color: #f6097f;
-  font-weight: 500;
-}
-a:hover {
-  text-shadow: 0px 0px 10px #0077b6;
+
+body {
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(to right, #e0f7fa, #fff0f6);
+  margin: 0;
+  padding: 20px;
 }
 
-.thuchi-header,
-.thuchi__navbar {
-  display: flex;
-  justify-content: flex-start;
-  gap: 20px;
-}
-.thuchi-header {
-  margin-bottom: 20px;
-}
 .currency {
   font-weight: 550;
 }
@@ -158,4 +153,36 @@ a:hover {
 
 .currency.red {
   color: #c62828;
+}
+
+/* Navbar */
+.header {
+  box-shadow: 0 2px 8px #0000001a;
+  margin-bottom: 30px;
+}
+
+.navbar {
+  background: linear-gradient(to left, #e3eff0, #fdecf2);
+  padding: 12px 30px;
+}
+
+.navbarlist {
+  display: flex;
+  justify-content: start;
+  white-space: nowrap;
+}
+
+.navbarlist li a {
+  display: inline-block;
+  color: #4f517d;
+  font-weight: 600;
+  padding: 8px 2vw;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.navbarlist li a:hover {
+  background: #f7fcff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px #00000026;
 }

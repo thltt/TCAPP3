@@ -74,26 +74,6 @@ const removeTrip = async (id) => {
   return result.affectedRows;
 };
 
-// cập nhật phiếu chuyến
-const updateTripById = async (id, { ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu }) => {
-  const sql = `UPDATE phieuchuyen SET 
-    ngay=?, so_chuyen=?, cong_ty=?, cung_duong=?, so_khoi=?, don_gia=?, so_tien=?, tinh_trang=?, ghi_chu=? 
-    WHERE id=?`;
-  const [result] = await pool.query(sql, [
-    ngay,
-    so_chuyen,
-    cong_ty,
-    cung_duong,
-    so_khoi,
-    don_gia,
-    so_tien,
-    tinh_trang,
-    ghi_chu,
-    id,
-  ]);
-  return result.affectedRows;
-};
-
 // === Công Nợ ====
 
 // lấy tất cả công nợ
@@ -139,7 +119,6 @@ module.exports = {
   getTrips,
   insertTrip,
   removeTrip,
-  updateTripById,
   // Công nợ
   getDebts,
   insertDebt,

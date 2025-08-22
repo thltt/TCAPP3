@@ -12,7 +12,6 @@ const {
   getTrips,
   insertTrip,
   removeTrip,
-  updateTripById,
   // Công nợ
   getDebts,
   insertDebt,
@@ -103,13 +102,6 @@ const deleteTrip = async (req, res) => {
   });
 };
 
-// Cập nhật Phiếu chuyến
-const updateTrip = async (req, res) => {
-  const { id } = req.params;
-  await updateTripById(id, req.body);
-  res.json({ message: "Cập nhật thành công" });
-};
-
 // ===== Công nợ =====
 
 // lấy tất cả công nợ
@@ -151,7 +143,6 @@ module.exports = {
   getAllTrips,
   addTrip,
   deleteTrip,
-  updateTrip,
   // Công nợ
   getAllDebts,
   addDebt,

@@ -58,9 +58,6 @@ router.get("/api/trips/summary", getAllSummaryTrips);
 // API thêm  phiếu chuyến
 router.post("/api/trips", addTrip);
 
-// API cập nhật phiếu chuyến
-router.put("/api/trips/:id", updateTrip);
-
 // API xóa phiếu chuyến
 router.delete("/api/trips/:id", deleteTrip);
 
