@@ -1,80 +1,3 @@
-h2 {
-  text-align: center;
-  color: #c2185b;
-  margin-bottom: 30px;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.input-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.input-row label {
-  min-width: 80px;
-  font-weight: 600;
-}
-
-input,
-select,
-button {
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-input[type="date"] {
-  font-family: "Inter", sans-serif;
-}
-
-button {
-  background-color: var(--color-pink);
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-button:hover {
-  background-color: #ad1457;
-}
-
-.clear-button {
-  background-color: var(--color-blue);
-}
-
-.clear-button:hover {
-  background-color: #005f87;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 10px #0000000d;
-}
-
-th,
-td {
-  border: 1px solid #e0e0e0;
-  padding: 12px 8px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-th {
-  background-color: #b2ebf2;
-  color: #333;
-  font-weight: 600;
-}
-
 .start-row td {
   text-align: center;
   font-weight: bold;
@@ -93,68 +16,8 @@ th {
   padding: 8px 20px;
   margin-right: 50px;
 }
-.currency {
-  text-align: center;
-}
-.transactionTable tbody tr {
-  background: linear-gradient(to top, #e0f7fa, #fff0f6);
-}
-
-.transactionTable tbody tr:nth-child(even) .deleteTransaction-btn {
-  background-color: #479ccb;
-}
-.transactionTable tbody tr:nth-child(odd) .deleteTransaction-btn {
-  background-color: #d878a8;
-}
 
 @media (max-width: 480px) {
-  body {
-    padding: 10px;
-  }
-
-  h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-
-  .input-row {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .input-group {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    width: 100%;
-  }
-
-  .input-group label {
-    min-width: 60px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .input-group input,
-  .input-group select {
-    flex: 1;
-    font-size: 12px;
-    padding: 6px;
-  }
-
-  .button-group {
-    display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
-    column-gap: 2%;
-  }
-
-  .button-group button {
-    flex: 1;
-    min-width: 80px;
-    font-size: 12px;
-    padding: 6px;
-  }
-
   .input__startingBalance {
     display: flex;
     gap: 5px;
@@ -175,13 +38,7 @@ th {
     margin-right: 0;
   }
 
-  .transactionTable {
-    display: block;
-    overflow-x: auto;
-    white-space: normal;
-    font-size: 12px;
-  }
-  .deleteTransaction-btn {
+  .deleteRow-btn {
     padding: 3px;
     border-radius: 3px;
     border: 1px solid #ccc;
@@ -190,10 +47,5 @@ th {
   .startingBalanceTable {
     display: block;
     font-size: 0.8rem;
-  }
-
-  th,
-  td {
-    padding: 3px;
   }
 }

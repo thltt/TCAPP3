@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../public/css/reset.css" />
     <link rel="stylesheet" href="../public/css/styleCongno.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="../public/js/mainCongno.js"></script>
     <link rel="apple-touch-icon" sizes="57x57" href="../public/favicon/favDebts/apple-icon-57x57.png" />
@@ -30,9 +31,11 @@
     <header class="header">
       <nav class="navbar">
         <ul class="navbarlist">
-          <li><a href="../../index.html">Về trang chủ</a></li>
-          <li><a href="../views/phieuchuyen.html">Phiếu chuyến</a></li>
-          <li><a href="../views/thuchi.html">Thu chi</a></li>
+          <li>
+            <a href="../../index.html"><i class="fa-solid fa-caret-left"></i> Trang Chủ</a>
+          </li>
+          <li><a href="../views/phieuchuyen.html">Phiếu Chuyến</a></li>
+          <li><a href="../views/thuchi.html">Thu Chi</a></li>
         </ul>
       </nav>
     </header>
@@ -69,14 +72,14 @@
       </div>
 
       <div class="button-group">
-        <button onclick="addRow()">Thêm</button>
-        <button onclick="clearInputs()">Đặt lại</button>
-        <button onclick="exportToExcel()">Xuất Excel</button>
+        <button class="add-btn" onclick="addRow()">Thêm</button>
+        <button class="clear-button" onclick="clearInputs()">Đặt lại</button>
+        <button class="export-btn" onclick="exportToExcel()">Xuất Excel</button>
       </div>
     </div>
 
     <div class="containertransDebtTable">
-      <table class="transDebtTable" id="transDebtTable">
+      <table class="table_common transDebtTable" id="transDebtTable">
         <thead>
           <tr>
             <th>Ngày</th>

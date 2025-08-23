@@ -107,7 +107,7 @@ function renderTable(transactions, startingBalance = 0) {
       <td class="currency">${formatCurrency(amount)}</td>
       <td>${t.category || ""}</td>
       <td class="currency">${formatCurrency(balances[index])}</td>
-      <td><button class="deleteTransaction-btn" onclick="deleteTransaction(${t.id})">Xóa</button></td>
+      <td><button class="deleteRow-btn" onclick="deleteTransaction(${t.id})"><i class="fa-solid fa-trash"></i></button></td>
     `;
   });
 }
@@ -205,4 +205,16 @@ function exportToExcel() {
 }
 
 // Khi load trang
-window.onload = loadData;
+window.onload = () => {
+  loadData();
+
+  // Lắng nghe Enter cho toàn bộ input/select
+  document.querySelectorAll("input, select").forEach((el) => {
+    el.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault(); // tránh reload form
+        addRow();
+      }
+    });
+  });
+};

@@ -4,6 +4,16 @@ const API_TRIPS = "https://tcapp2.onrender.com/api/trips";
 window.onload = () => {
   fetchTrips();
   setupTinhTrangListener();
+
+  // Lắng nghe Enter cho toàn bộ input/select
+  document.querySelectorAll("input, select").forEach((el) => {
+    el.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault(); // tránh reload form
+        addRow();
+      }
+    });
+  });
 };
 
 // Định dạng số tiền
@@ -52,8 +62,8 @@ function renderTable(trips) {
       <td>${formattedDonGia}</td>
       <td class="${amountClass}">${formattedSoTien}</td>
       <td>${t.tinh_trang}</td>
-      <td>${t.ghi_chu || ""}</td>
-      <td><button class="delete-btn" onclick="deleteTrip(${t.id})">Xóa</button></td>
+      <td class="note-cell" title="${t.ghi_chu}">${t.ghi_chu || ""}</td>
+      <td><button class="deleteRow-btn" onclick="deleteTrip(${t.id})"><i class="fa-solid fa-trash"></i></button></td>
     `;
     tbody.appendChild(row);
   });

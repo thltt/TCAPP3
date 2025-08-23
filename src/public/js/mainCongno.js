@@ -1,6 +1,19 @@
 const API_DEBTS = "https://tcapp2.onrender.com/api/debts";
 
 window.onload = fetchDebts();
+window.onload = () => {
+  fetchDebts();
+
+  // Lắng nghe Enter cho toàn bộ input/select
+  document.querySelectorAll("input, select").forEach((el) => {
+    el.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault(); // tránh reload form
+        addRow();
+      }
+    });
+  });
+};
 
 // Định dạng số tiền
 function formatCurrency(number) {
@@ -42,8 +55,8 @@ function renderTable(debt) {
         <td>${t.noi_dung}</td>
         <td>${t.loai_gd}</td>
         <td class="${amountClass}">${formattedSoTien}</td>
-        <td>${t.ghi_chu}</td>
-        <td><button class="delete-btn" onclick="deleteDebt(${t.id})">Xóa</button></td>
+        <td class="note-cell" title="${t.ghi_chu}">${t.ghi_chu}</td>
+        <td><button class="deleteRow-btn" onclick="deleteDebt(${t.id})"><i class="fa-solid fa-trash"></i></button></td>
     `;
     tbody.appendChild(row);
   });
