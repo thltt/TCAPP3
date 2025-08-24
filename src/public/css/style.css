@@ -54,6 +54,7 @@ body {
 .nav a {
   display: block;
   padding: 12px 15px;
+  font-size: 1.1rem;
   color: #fff;
   text-decoration: none;
   border-radius: 8px;
@@ -64,6 +65,13 @@ body {
 .nav a:focus {
   background-color: var(--primary-color);
   transform: translateX(5px);
+}
+.copyright {
+  margin-top: 140%;
+  padding-left: 3vw;
+  padding-top: 10px;
+  color: #fffafa61;
+  border-top: 1px solid currentColor;
 }
 
 .main {
@@ -118,10 +126,10 @@ body {
   text-align: right;
 }
 
-.not_pay {
+.paid {
   color: #28a745;
 }
-.paid {
+.not_pay {
   color: #dc3545;
 }
 .remain {
@@ -163,7 +171,8 @@ body {
     box-shadow: 0 2px 5px var(--shadow-color);
   }
 
-  .maintitle {
+  .maintitle,
+  .copyright {
     display: none;
   }
 
