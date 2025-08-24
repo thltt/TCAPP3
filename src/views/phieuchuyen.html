@@ -45,12 +45,12 @@
     <div class="input-row">
       <div class="input-group">
         <label for="dateInput">Ngày:</label>
-        <input type="date" id="dateInput" />
+        <input type="date" id="dateInput" step="1" />
       </div>
 
       <div class="input-group">
         <label for="soChuyenInput">Tổng số chuyến:</label>
-        <input type="number" id="soChuyenInput" />
+        <input type="number" id="soChuyenInput" min="0" />
       </div>
 
       <div class="input-group">
@@ -60,17 +60,17 @@
 
       <div class="input-group">
         <label for="cungDuongInput">Cung đường:</label>
-        <input type="text" id="cungDuongInput" value="30km" />
+        <input type="text" id="cungDuongInput" value="30km" min="0" />
       </div>
 
       <div class="input-group">
         <label for="soKhoiInput">Số khối:</label>
-        <input type="number" id="soKhoiInput" step="0.1" value="29.4" />
+        <input type="number" id="soKhoiInput" step="0.1" value="29.4" min="0" />
       </div>
 
       <div class="input-group">
         <label for="donGiaInput">Đơn giá:</label>
-        <input type="number" id="donGiaInput" step="1000" value="70000" />
+        <input type="number" id="donGiaInput" step="1000" value="70000" min="0" />
       </div>
 
       <div class="input-group">
