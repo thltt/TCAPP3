@@ -150,7 +150,6 @@ async function addRow() {
 
     if (!response.ok) throw new Error("Lỗi khi thêm giao dịch");
 
-    clearInputs();
     await loadData();
   } catch (error) {
     console.error("Lỗi kết nối server:", error);
