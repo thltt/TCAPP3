@@ -60,4 +60,4 @@ function refreshData() {
   fetchSummaryDebts();
 }
 refreshData();
-setInterval(refreshData, 600000);
+setInterval(refreshData, 600001);
