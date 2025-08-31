@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mytcapp3",
+  "name": "mytcapp",
   "main": "./src/server.js",
   "compatibility_date": "2025-08-31",
   // "compatibility_flags": [
