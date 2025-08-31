@@ -26,6 +26,19 @@ const web = new Hono();
 
 // ===== Health check =====
 web.get("/health", getAwake);
+web.get("/", (c) => {
+  return c.html(`
+    <html>
+      <head>
+        <title>Thu Chi App</title>
+      </head>
+      <body>
+        <h1>Welcome to Thu Chi App!</h1>
+        <p>Server is running on Cloudflare Workers.</p>
+      </body>
+    </html>
+  `);
+});
 
 // ===== Thu Chi =====
 web.get("/api/starting-balance", getStartingBalance);
