@@ -21,11 +21,15 @@ import {
 } from "../services/CRUD.js";
 
 // Controller giữ awake
+// src/controllers/homeController.js
+const startTime = Date.now();
 export const getAwake = (c) => {
+  const uptime = Date.now() - startTime; // ms
   return c.json({
     status: "ok",
-    uptime: process.uptime(),
-    time: new Date(),
+    uptime_ms: uptime,
+    uptime_seconds: Math.floor(uptime / 1000),
+    time: new Date().toISOString(),
   });
 };
 
