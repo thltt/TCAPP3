@@ -1,26 +1,21 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+// src/server.js
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import webRouter from "./routes/web.js"; // nhớ có .js
 
-const app = express();
-const port = process.env.PORT || 8040;
+const app = new Hono();
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
+// Middleware CORS cho tất cả route
+app.use("*", cors());
 
-const webRouter = require("./routes/web");
-app.use("/", webRouter); //goi route
+// Mount router
+app.route("/", webRouter);
 
 // Middleware xử lý lỗi tập trung
-app.use((err, req, res, next) => {
+app.onError((err, c) => {
   console.error("❌ Lỗi:", err);
-  res.status(500).json({ error: err.message });
+  return c.json({ error: err.message }, 500);
 });
 
-// Khởi động server
-app.listen(port, "0.0.0.0", () => {
-  console.log(`🚀 Server đang chạy trên cổng ${port}`);
-});
+// Chỉ export app, Cloudflare Workers sẽ tự dùng
+export default app;

@@ -1,5 +1,0 @@
-{
-  "name": "tcapp3",
-  "compatibility_date": "2025-08-31",
-  "main": "./src/server.js"
-}

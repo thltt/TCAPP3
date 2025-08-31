@@ -1,7 +1,6 @@
-const express = require("express");
-const router = express.Router();
-
-const {
+// routes/web.js
+import { Hono } from "hono";
+import {
   getAwake,
   // Thu Chi
   getStartingBalance,
@@ -14,65 +13,39 @@ const {
   getAllTrips,
   addTrip,
   deleteTrip,
-  updateTrip,
   // Công nợ
   getAllDebts,
   addDebt,
   deleteDebt,
-  // lấy tổng
+  // Lấy tổng
   getAllSummaryDebts,
   getAllSummaryTrips,
-} = require("../controllers/homeController");
+} from "../controllers/homeController.js";
 
-// API giữ awake
-router.get("/health", getAwake);
+const web = new Hono();
 
-// ==== Thu Chi =====
+// ===== Health check =====
+web.get("/health", getAwake);
 
-// API lấy giá trị tồn đầu
-router.get("/api/starting-balance", getStartingBalance);
+// ===== Thu Chi =====
+web.get("/api/starting-balance", getStartingBalance);
+web.post("/api/starting-balance", postStartingBalance);
 
-// API cập nhật hoặc xóa tồn đầu
-router.post("/api/starting-balance", postStartingBalance);
+web.post("/api/transactions", postTransactions);
+web.get("/api/transactions", getTransactions);
+web.get("/api/transactions/count", getCountTransactions);
+web.delete("/api/transactions/:id", deleteTransactions);
 
-// API thêm giao dịch
-router.post("/api/transactions", postTransactions);
+// ===== Phiếu Chuyến =====
+web.get("/api/trips", getAllTrips);
+web.get("/api/trips/summary", getAllSummaryTrips);
+web.post("/api/trips", addTrip);
+web.delete("/api/trips/:id", deleteTrip);
 
-// API lấy giao dịch (có phân trang)
-router.get("/api/transactions", getTransactions);
+// ===== Công Nợ =====
+web.get("/api/debts", getAllDebts);
+web.get("/api/debts/summary", getAllSummaryDebts);
+web.post("/api/debts", addDebt);
+web.delete("/api/debts/:id", deleteDebt);
 
-// API đếm tổng số giao dịch (hỗ trợ phân trang client)
-router.get("/api/transactions/count", getCountTransactions);
-
-// API xóa giao dịch
-router.delete("/api/transactions/:id", deleteTransactions);
-
-// ==== Phiếu Chuyến =======
-
-// API lấy tất cả phiếu chuyến
-router.get("/api/trips", getAllTrips);
-
-// API lấy tổng chuyển cty còn nợ/đã trả
-router.get("/api/trips/summary", getAllSummaryTrips);
-
-// API thêm  phiếu chuyến
-router.post("/api/trips", addTrip);
-
-// API xóa phiếu chuyến
-router.delete("/api/trips/:id", deleteTrip);
-
-// ==== Công Nợ =======
-
-// API lấy tất cả công nợ
-router.get("/api/debts", getAllDebts);
-
-// API lấy tổng công nợ chưa trả/đã trả
-router.get("/api/debts/summary", getAllSummaryDebts);
-
-// API thêm công nợ
-router.post("/api/debts", addDebt);
-
-// API xóa công nợ
-router.delete("/api/debts/:id", deleteDebt);
-
-module.exports = router;
+export default web;

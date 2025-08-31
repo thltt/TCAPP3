@@ -1,6 +1,5 @@
-const pool = require("../config/database");
-
-const {
+// controllers/homeController.js
+import {
   // Thu Chi
   getAmountStartingBalance,
   updateStartingBalance,
@@ -19,135 +18,122 @@ const {
   // lấy tổng
   getSummaryDebts,
   getSummaryTrips,
-} = require("../services/CRUD");
+} from "../services/CRUD.js";
 
 // Controller giữ awake
-const getAwake = (req, res) => {
-  res.status(200).json({ status: "ok", uptime: process.uptime(), time: new Date() });
+export const getAwake = (c) => {
+  return c.json({
+    status: "ok",
+    uptime: process.uptime(),
+    time: new Date(),
+  });
 };
 
 // ===== Thu Chi =====
 
-// Controller lấy giá trị tồn đầu Thu Chi
-const getStartingBalance = async (req, res) => {
+// Lấy giá trị tồn đầu Thu Chi
+export const getStartingBalance = async (c) => {
   const result = await getAmountStartingBalance();
-  res.json({ starting_balance: result.starting_balance });
+  return c.json({ starting_balance: result.starting_balance });
 };
 
-// Controller cập nhật hoặc xóa tồn đầu Thu Chi
-const postStartingBalance = async (req, res) => {
-  const { starting_balance } = req.body;
-  const result = await updateStartingBalance(starting_balance);
-  res.json({ message: "Chỉnh sửa tồn đầu thành công.", result });
+// Cập nhật hoặc xóa tồn đầu Thu Chi
+export const postStartingBalance = async (c) => {
+  const body = await c.req.json();
+  const result = await updateStartingBalance(body.starting_balance);
+  return c.json({ message: "Chỉnh sửa tồn đầu thành công.", result });
 };
 
-// Controller thêm giao dịch Thu Chi
-const postTransactions = async (req, res) => {
-  const id = await addTransaction(req.body);
-  res.json({ message: "Thêm thành công", id });
+// Thêm giao dịch
+export const postTransactions = async (c) => {
+  const body = await c.req.json();
+  const id = await addTransaction(body);
+  return c.json({ message: "Thêm thành công", id });
 };
 
-// Controller lấy giao dịch (có phân trang) Thu Chi
-const getTransactions = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 50;
+// Lấy danh sách giao dịch (phân trang)
+export const getTransactions = async (c) => {
+  const page = parseInt(c.req.query("page") || "1");
+  const limit = parseInt(c.req.query("limit") || "50");
   const offset = (page - 1) * limit;
   const rows = await getTransactionsList(limit, offset);
-  res.json(rows);
+  return c.json(rows);
 };
 
-// Controller đếm tổng số giao dịch (hỗ trợ phân trang client) Thu Chi
-const getCountTransactions = async (req, res) => {
+// Đếm tổng số giao dịch
+export const getCountTransactions = async (c) => {
   const total = await countTransactions();
-  res.json({ total });
+  return c.json({ total });
 };
 
-// Controller xóa giao dịch Thu Chi
-const deleteTransactions = async (req, res) => {
-  const id = req.params.id;
+// Xóa giao dịch
+export const deleteTransactions = async (c) => {
+  const id = c.req.param("id");
   const affected = await deleteTransaction(id);
   if (affected === 0) {
-    res.status(404).json({ message: "Không tìm thấy giao dịch để xóa." });
-  } else {
-    res.json({ message: "Đã xóa thành công." });
+    return c.json({ message: "Không tìm thấy giao dịch để xóa." }, 404);
   }
+  return c.json({ message: "Đã xóa thành công." });
 };
 
 // ===== Phiếu chuyến =====
 
 // Lấy tất cả phiếu chuyến
-const getAllTrips = async (req, res) => {
+export const getAllTrips = async (c) => {
   const rows = await getTrips();
-  res.json(rows);
+  return c.json(rows);
 };
 
-// lấy tổng phiếu chuyến
-const getAllSummaryTrips = async (req, res) => {
+// Lấy tổng phiếu chuyến
+export const getAllSummaryTrips = async (c) => {
   const summary = await getSummaryTrips();
-  res.json(summary);
+  return c.json(summary);
 };
 
-// Thêm Phiếu chuyến
-const addTrip = async (req, res) => {
-  const id = await insertTrip(req.body);
-  res.json({ message: "Thêm thành công", id });
+// Thêm phiếu chuyến
+export const addTrip = async (c) => {
+  const body = await c.req.json();
+  const id = await insertTrip(body);
+  return c.json({ message: "Thêm thành công", id });
 };
 
-// Xóa Phiếu chuyến
-const deleteTrip = async (req, res) => {
-  const { id } = req.params;
+// Xóa phiếu chuyến
+export const deleteTrip = async (c) => {
+  const id = c.req.param("id");
   const affected = await removeTrip(id);
-  res.status(affected === 0 ? 404 : 200).json({
-    message: affected === 0 ? "Không tìm thấy phiếu chuyến để xóa." : "Xóa thành công",
-  });
+  if (affected === 0) {
+    return c.json({ message: "Không tìm thấy phiếu chuyến để xóa." }, 404);
+  }
+  return c.json({ message: "Xóa thành công" });
 };
 
 // ===== Công nợ =====
 
-// lấy tất cả công nợ
-const getAllDebts = async (req, res) => {
+// Lấy tất cả công nợ
+export const getAllDebts = async (c) => {
   const rows = await getDebts();
-  res.json(rows);
+  return c.json(rows);
 };
 
-// lấy tổng công nợ
-const getAllSummaryDebts = async (req, res) => {
+// Lấy tổng công nợ
+export const getAllSummaryDebts = async (c) => {
   const summary = await getSummaryDebts();
-  res.json(summary);
+  return c.json(summary);
 };
 
-// thêm công nợ
-const addDebt = async (req, res) => {
-  const id = await insertDebt(req.body);
-  res.json({ message: "Thêm thành công", id });
+// Thêm công nợ
+export const addDebt = async (c) => {
+  const body = await c.req.json();
+  const id = await insertDebt(body);
+  return c.json({ message: "Thêm thành công", id });
 };
 
-// xóa công nợ
-const deleteDebt = async (req, res) => {
-  const { id } = req.params;
+// Xóa công nợ
+export const deleteDebt = async (c) => {
+  const id = c.req.param("id");
   const affected = await removeDebt(id);
-  res.status(affected === 0 ? 404 : 200).json({
-    message: affected === 0 ? "Không tìm thấy công nợ để xóa." : "Xóa thành công",
-  });
-};
-module.exports = {
-  getAwake,
-  // Thu Chi
-  getStartingBalance,
-  postStartingBalance,
-  postTransactions,
-  getTransactions,
-  getCountTransactions,
-  deleteTransactions,
-  // Phiếu Chuyến
-  getAllTrips,
-  addTrip,
-  deleteTrip,
-  // Công nợ
-  getAllDebts,
-  addDebt,
-  deleteDebt,
-  // lấy tổng
-  getAllSummaryDebts,
-  getAllSummaryTrips,
+  if (affected === 0) {
+    return c.json({ message: "Không tìm thấy công nợ để xóa." }, 404);
+  }
+  return c.json({ message: "Xóa thành công" });
 };

@@ -1,129 +1,125 @@
-const pool = require("../config/database");
+// services/CRUD.js
+// ⚡ Cloudflare D1 version (dùng trong Workers)
+// Mọi hàm cần truyền context (c) từ Hono để lấy c.env.DB
 
 // ===== Thu Chi =====
 
-// lấy giá trị tồn đầu Thu Chi
-const getAmountStartingBalance = async () => {
-  const [rows] = await pool.query("SELECT starting_balance FROM settings WHERE id = 1");
-  return rows[0];
+// Lấy giá trị tồn đầu
+export const getAmountStartingBalance = async (c) => {
+  const { results } = await c.env.DB.prepare("SELECT starting_balance FROM settings WHERE id = 1").all();
+  return results[0];
 };
 
-// cập nhật giá trị tồn đầu Thu Chi
-const updateStartingBalance = async (starting_balance) => {
-  const [result] = await pool.query("UPDATE settings SET starting_balance = ? WHERE id = 1", [starting_balance]);
+// Cập nhật giá trị tồn đầu
+export const updateStartingBalance = async (c, starting_balance) => {
+  const result = await c.env.DB.prepare("UPDATE settings SET starting_balance = ? WHERE id = 1").bind(starting_balance).run();
   return result;
 };
 
-// thêm giao dịch mới Thu Chi
-const addTransaction = async ({ date, name, type, amount, category, note }) => {
-  const [result] = await pool.query(
-    `INSERT INTO transactions (date, name, type, amount, category, note) 
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [date, name, type, amount, category, note]
-  );
-  return result.insertId;
+// Thêm giao dịch mới
+export const addTransaction = async (c, { date, name, type, amount, category, note }) => {
+  const result = await c.env.DB.prepare(
+    `INSERT INTO transactions (date, name, type, amount, category, note)
+     VALUES (?, ?, ?, ?, ?, ?)`
+  )
+    .bind(date, name, type, amount, category, note)
+    .run();
+  return result.lastInsertRowid;
 };
 
-// lấy danh sách giao dịch Thu Chi
-const getTransactionsList = async (limit, offset) => {
-  const [rows] = await pool.query("SELECT * FROM transactions ORDER BY date DESC, id DESC LIMIT ? OFFSET ?", [limit, offset]);
-  return rows;
+// Lấy danh sách giao dịch
+export const getTransactionsList = async (c, limit, offset) => {
+  const { results } = await c.env.DB.prepare("SELECT * FROM transactions ORDER BY date DESC, id DESC LIMIT ? OFFSET ?")
+    .bind(limit, offset)
+    .all();
+  return results;
 };
 
-// đếm số lượng giao dịch Thu Chi
-const countTransactions = async () => {
-  const [rows] = await pool.query("SELECT COUNT(*) as total FROM transactions");
-  return rows[0].total;
+// Đếm số lượng giao dịch
+export const countTransactions = async (c) => {
+  const { results } = await c.env.DB.prepare("SELECT COUNT(*) as total FROM transactions").all();
+  return results[0].total;
 };
 
-// xóa giao dịch Thu Chi
-const deleteTransaction = async (id) => {
-  const [result] = await pool.query("DELETE FROM transactions WHERE id = ?", [id]);
-  return result.affectedRows;
+// Xóa giao dịch
+export const deleteTransaction = async (c, id) => {
+  const result = await c.env.DB.prepare("DELETE FROM transactions WHERE id = ?").bind(id).run();
+  return result.changes; // số dòng bị ảnh hưởng
 };
 
-// === Phiếu chuyến ====
+// ===== Phiếu chuyến =====
 
-// lấy chuyến
-const getTrips = async () => {
-  const [rows] = await pool.query("SELECT * FROM phieuchuyen ORDER BY ngay DESC, id DESC");
-  return rows;
+// Lấy tất cả phiếu chuyến
+export const getTrips = async (c) => {
+  const { results } = await c.env.DB.prepare("SELECT * FROM phieuchuyen ORDER BY ngay DESC, id DESC").all();
+  return results;
 };
 
-// lấy tổng phiếu chuyến đã trả/chưa trả
-const getSummaryTrips = async () => {
-  const [summary] = await pool.query(`SELECT
-	SUM(CASE WHEN tinh_trang='NỢ' THEN so_tien ELSE 0 END) AS cty_no,
-	SUM(CASE WHEN tinh_trang='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS cty_tra
-  FROM phieuchuyen`);
-  return summary;
+// Lấy tổng phiếu chuyến (nợ / đã thanh toán)
+export const getSummaryTrips = async (c) => {
+  const { results } = await c.env.DB.prepare(
+    `
+    SELECT
+      SUM(CASE WHEN tinh_trang='NỢ' THEN so_tien ELSE 0 END) AS cty_no,
+      SUM(CASE WHEN tinh_trang='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS cty_tra
+    FROM phieuchuyen
+  `
+  ).all();
+  return results[0];
 };
 
-// thêm phiếu chuyến
-const insertTrip = async ({ ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu }) => {
-  const sql = `INSERT INTO phieuchuyen 
-    (ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-  const [result] = await pool.query(sql, [ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu]);
-  return result.insertId;
+// Thêm phiếu chuyến
+export const insertTrip = async (c, { ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu }) => {
+  const result = await c.env.DB.prepare(
+    `INSERT INTO phieuchuyen 
+      (ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu) 
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  )
+    .bind(ngay, so_chuyen, cong_ty, cung_duong, so_khoi, don_gia, so_tien, tinh_trang, ghi_chu)
+    .run();
+  return result.lastInsertRowid;
 };
 
-// xóa phiếu chuyến
-const removeTrip = async (id) => {
-  const [result] = await pool.query("DELETE FROM phieuchuyen WHERE id = ?", [id]);
-  return result.affectedRows;
+// Xóa phiếu chuyến
+export const removeTrip = async (c, id) => {
+  const result = await c.env.DB.prepare("DELETE FROM phieuchuyen WHERE id = ?").bind(id).run();
+  return result.changes;
 };
 
-// === Công Nợ ====
+// ===== Công nợ =====
 
-// lấy tất cả công nợ
-const getDebts = async () => {
-  const [rows] = await pool.query("SELECT * FROM congno ORDER BY ngay DESC, id DESC");
-  return rows;
+// Lấy tất cả công nợ
+export const getDebts = async (c) => {
+  const { results } = await c.env.DB.prepare("SELECT * FROM congno ORDER BY ngay DESC, id DESC").all();
+  return results;
 };
 
-// lấy tổng công nợ chưa trả/đã trả
-const getSummaryDebts = async () => {
-  const [summary] = await pool.query(`SELECT
-  SUM(CASE WHEN loai_gd='NỢ' THEN so_tien ELSE 0 END) AS tong_no,
-  SUM(CASE WHEN loai_gd='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS tong_da_tra
-  FROM congno`);
-  return summary;
+// Lấy tổng công nợ
+export const getSummaryDebts = async (c) => {
+  const { results } = await c.env.DB.prepare(
+    `
+    SELECT
+      SUM(CASE WHEN loai_gd='NỢ' THEN so_tien ELSE 0 END) AS tong_no,
+      SUM(CASE WHEN loai_gd='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS tong_da_tra
+    FROM congno
+  `
+  ).all();
+  return results[0];
 };
 
-// thêm công nợ
-const insertDebt = async ({ ngay, noi_dung, loai_gd, so_tien, ghi_chu }) => {
-  const [result] = await pool.query(
+// Thêm công nợ
+export const insertDebt = async (c, { ngay, noi_dung, loai_gd, so_tien, ghi_chu }) => {
+  const result = await c.env.DB.prepare(
     `INSERT INTO congno (ngay, noi_dung, loai_gd, so_tien, ghi_chu) 
-     VALUES (?, ?, ?, ?, ?)`,
-    [ngay, noi_dung, loai_gd, so_tien, ghi_chu]
-  );
-  return result.insertId;
+     VALUES (?, ?, ?, ?, ?)`
+  )
+    .bind(ngay, noi_dung, loai_gd, so_tien, ghi_chu)
+    .run();
+  return result.lastInsertRowid;
 };
 
-// xóa công nợ
-const removeDebt = async (id) => {
-  const [result] = await pool.query("DELETE FROM congno WHERE id = ?", [id]);
-  return result.affectedRows;
-};
-
-module.exports = {
-  // Thu Chi
-  getAmountStartingBalance,
-  updateStartingBalance,
-  addTransaction,
-  getTransactionsList,
-  countTransactions,
-  deleteTransaction,
-  // Phiếu Chuyến
-  getTrips,
-  insertTrip,
-  removeTrip,
-  // Công nợ
-  getDebts,
-  insertDebt,
-  removeDebt,
-  // Gửi tổng
-  getSummaryDebts,
-  getSummaryTrips,
+// Xóa công nợ
+export const removeDebt = async (c, id) => {
+  const result = await c.env.DB.prepare("DELETE FROM congno WHERE id = ?").bind(id).run();
+  return result.changes;
 };
