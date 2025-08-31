@@ -58,12 +58,10 @@ export const getTrips = async (c) => {
 // Lấy tổng phiếu chuyến (nợ / đã thanh toán)
 export const getSummaryTrips = async (c) => {
   const { results } = await c.env.DB.prepare(
-    `
-    SELECT
+    `SELECT
       SUM(CASE WHEN tinh_trang='NỢ' THEN so_tien ELSE 0 END) AS cty_no,
       SUM(CASE WHEN tinh_trang='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS cty_tra
-    FROM phieuchuyen
-  `
+    FROM phieuchuyen`
   ).all();
   return results[0];
 };
@@ -97,12 +95,10 @@ export const getDebts = async (c) => {
 // Lấy tổng công nợ
 export const getSummaryDebts = async (c) => {
   const { results } = await c.env.DB.prepare(
-    `
-    SELECT
+    `SELECT
       SUM(CASE WHEN loai_gd='NỢ' THEN so_tien ELSE 0 END) AS tong_no,
       SUM(CASE WHEN loai_gd='ĐÃ THANH TOÁN' THEN so_tien ELSE 0 END) AS tong_da_tra
-    FROM congno
-  `
+    FROM congno`
   ).all();
   return results[0];
 };
