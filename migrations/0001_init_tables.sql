@@ -1,4 +1,4 @@
--- Migration number: 0001 	 2025-09-01T02:01:58.385Z
+-- Migration number: 0001 	 2025-09-01T02:46:36.563Z
 -- settings: lưu tồn đầu
 CREATE TABLE IF NOT EXISTS settings (
   id INTEGER PRIMARY KEY,

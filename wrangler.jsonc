@@ -1,5 +1,4 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "mytcapp3",
   "main": "./src/server.js",
   "compatibility_date": "2025-08-31",
@@ -22,17 +21,13 @@
   //   }
   // ],
   "d1_databases": [
-    // {
-    // 	"binding": "mydb",
-    // 	"database_name": "mydb",
-    // 	"database_id": "9e3ceb33-c6d7-4431-b525-c52e93ba3d40"
-    // },
     {
       "binding": "mydb",
       "database_name": "mydb",
-      "database_id": "c790317a-234f-4935-b08b-e554bb8b9a1d"
+      "database_id": "0a54ef71-eb87-4de5-991a-452e6ea93b4d"
     }
   ]
+  //   "migrations_dir": "./migrations"
   // "ai": {
   //   "binding": "AI"
   // },
