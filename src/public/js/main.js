@@ -1,5 +1,5 @@
-const API_SUM_DEBTS = "https://tcapp2.onrender.com/api/debts/summary";
-const API_SUM_TRIPS = "https://tcapp2.onrender.com/api/trips/summary";
+const API_SUM_DEBTS = "https://mytcapp3.nhuhuynhnho254.workers.dev/api/debts/summary";
+const API_SUM_TRIPS = "https://mytcapp3.nhuhuynhnho254.workers.dev/api/trips/summary";
 
 let tripsSummary = null;
 let debtsSummary = null;

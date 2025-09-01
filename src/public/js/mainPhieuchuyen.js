@@ -1,4 +1,4 @@
-const API_TRIPS = "https://tcapp2.onrender.com/api/trips";
+const API_TRIPS = "https://mytcapp3.nhuhuynhnho254.workers.dev/api/trips";
 
 // Load danh sách phiếu chuyến khi mở trang
 window.onload = () => {
