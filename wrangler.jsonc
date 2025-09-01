@@ -22,10 +22,15 @@
   //   }
   // ],
   "d1_databases": [
+    // {
+    // 	"binding": "mydb",
+    // 	"database_name": "mydb",
+    // 	"database_id": "9e3ceb33-c6d7-4431-b525-c52e93ba3d40"
+    // },
     {
       "binding": "mydb",
       "database_name": "mydb",
-      "database_id": "9e3ceb33-c6d7-4431-b525-c52e93ba3d40"
+      "database_id": "c790317a-234f-4935-b08b-e554bb8b9a1d"
     }
   ]
   // "ai": {
