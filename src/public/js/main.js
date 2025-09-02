@@ -24,7 +24,6 @@ async function fetchSummaryTrips() {
     if (!res.ok) throw new Error(`Trips fetch failed: ${res.status}`);
 
     const raw = await res.json();
-    console.log("Trips data:", raw);
 
     tripsSummary = Array.isArray(raw) ? raw[0] : raw;
     if (!tripsSummary) return;
@@ -47,7 +46,6 @@ async function fetchSummaryDebts() {
     if (!res.ok) throw new Error(`Debts fetch failed: ${res.status}`);
 
     const raw = await res.json();
-    console.log("Debts data:", raw);
 
     debtsSummary = Array.isArray(raw) ? raw[0] : raw;
     if (!debtsSummary) return;

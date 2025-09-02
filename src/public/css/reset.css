@@ -1,3 +1,6 @@
+/* =======================
+   RESET + BIẾN CHUNG
+======================= */
 :root {
   --color-blue: #0077b6;
   --color-pink: #d63384;
@@ -92,12 +95,11 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
   font: inherit;
   vertical-align: middle;
   text-decoration: none;
 }
-/* HTML5 display-role reset for older browsers */
+
 article,
 aside,
 details,
@@ -111,9 +113,15 @@ nav,
 section {
   display: block;
 }
+
 body {
   line-height: 1;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(to right, #e0f7fa, #fff0f6);
+  margin: 0;
+  padding: 20px;
 }
+
 ol,
 ul {
   list-style: none;
@@ -122,27 +130,20 @@ blockquote,
 q {
   quotes: none;
 }
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
   content: "";
-  content: none;
 }
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* Css riêng */
-
-body {
-  font-family: "Inter", sans-serif;
-  background: linear-gradient(to right, #e0f7fa, #fff0f6);
-  margin: 0;
-  padding: 20px;
-}
-
+/* =======================
+   TIÊU ĐỀ 
+======================= */
 h2 {
   text-align: center;
   color: #c2185b;
@@ -151,35 +152,9 @@ h2 {
   font-weight: 600;
 }
 
-th,
-td {
-  border: 1px solid #e0e0e0;
-  padding: 12px 8px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-th {
-  background-color: #b2ebf2;
-  color: #333;
-  font-weight: 600;
-}
-
-.currency {
-  font-weight: 550;
-  text-align: center;
-}
-
-.currency.green {
-  color: #2e7d32;
-}
-
-.currency.red {
-  color: #c62828;
-}
-
-/* Navbar */
-
+/* =======================
+   NAVBAR
+======================= */
 .header {
   margin: -20px -20px 30px -20px;
 }
@@ -187,7 +162,7 @@ th {
 .navbar {
   background: linear-gradient(to left, #e3eff0, #fdecf2);
   padding: 12px 30px;
-  box-shadow: 0 2px 8px #0000001a;
+  box-shadow: 0 2px 8px var(--shadow-color);
   margin-bottom: 30px;
   width: 100%;
 }
@@ -214,7 +189,26 @@ th {
   box-shadow: 0 2px 6px #00000026;
 }
 
-/* table */
+/* =======================
+   FORM INPUT
+======================= */
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.input-row label {
+  font-weight: 600;
+}
 
 input,
 select,
@@ -250,26 +244,10 @@ button {
   background-color: #005f87;
 }
 
-.input-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.input-row label {
-  font-weight: 600;
-}
-
+/* =======================
+   BẢNG DỮ LIỆU
+======================= */
 table {
-  border-collapse: collapse;
   width: 100%;
   background: #fff;
   border-radius: 8px;
@@ -277,8 +255,32 @@ table {
   box-shadow: 0 0 10px #0000000d;
 }
 
+th,
+td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #b2ebf2;
+  color: #333;
+  font-weight: 600;
+}
+
 .table_common tbody tr {
   background: linear-gradient(to top, #e0f7fa, #fff0f6);
+}
+
+.currency {
+  font-weight: 550;
+}
+.currency.green {
+  color: #2e7d32;
+}
+.currency.red {
+  color: #c62828;
 }
 
 td.note-cell {
@@ -299,25 +301,26 @@ td.note-cell {
 .deleteRow-btn i {
   color: #ff4d88;
   font-size: 18px;
-  transition: color 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .deleteRow-btn:hover i {
-  scale: 1.2;
+  transform: scale(1.2);
 }
 
-/* Responsive */
+/* =======================
+   RESPONSIVE MOBILE
+======================= */
 @media (max-width: 768px) {
   body {
     padding: 8px;
   }
-  .deleteRow-btn i {
-    font-size: 14px;
-  }
+
   h2 {
     font-size: 1.4rem;
     margin-bottom: 20px;
   }
+
   .navbarlist {
     justify-content: space-between;
   }
@@ -327,31 +330,29 @@ td.note-cell {
     width: 100%;
     text-align: center;
   }
+
   .table_common {
     display: block;
     overflow-x: auto;
-    white-space: normal;
     font-size: 12px;
   }
 
   .input-row {
+    display: flex;
     flex-direction: column;
     gap: 8px;
     width: 100%;
   }
 
   .input-group {
-    display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
   }
 
   .input-group label {
     min-width: 25%;
     font-size: 12px;
-    font-weight: 600;
     text-align: left;
   }
 
@@ -370,7 +371,6 @@ td.note-cell {
   }
 
   .button-group button {
-    flex: 1;
     min-width: 80px;
     font-size: 12px;
     padding: 6px;
@@ -383,5 +383,9 @@ td.note-cell {
 
   td.note-cell {
     max-width: 80px;
+  }
+
+  .deleteRow-btn i {
+    font-size: 14px;
   }
 }

@@ -1,8 +1,8 @@
 :root {
-  --primary-color: #4a90e2; /* Màu xanh dương chủ đạo */
+  --primary-color: #d63384; /* Màu xanh dương chủ đạo */
   --secondary-color: #f7f9fc; /* Màu nền phụ */
   --background-color: #ffffff; /* Màu nền chính */
-  --nav-bg-color: #334d6e; /* Màu nền cho thanh navigation */
+  --nav-bg-color: #0077b6; /* Màu nền cho thanh navigation */
   --text-color: #333333; /* Màu chữ chính */
   --border-color: #e0e0e0; /* Màu viền */
   --shadow-color: rgba(0, 0, 0, 0.1); /* Màu đổ bóng */
@@ -38,7 +38,7 @@ body {
   font-weight: 600;
   text-align: center;
   margin-bottom: 20px;
-  color: #a0bbfb;
+  color: #ffffff;
   border-bottom: 1px solid #fff;
   padding-bottom: 20px;
 }
@@ -63,7 +63,7 @@ body {
 
 .nav a:hover,
 .nav a:focus {
-  background-color: var(--primary-color);
+  background-color: #ff077fb4;
   transform: translateX(5px);
 }
 .copyright {

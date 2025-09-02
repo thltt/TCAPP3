@@ -159,8 +159,6 @@ async function addRow() {
 
 // Xóa giao dịch
 async function deleteTransaction(id) {
-  if (!confirm("Bạn có chắc chắn muốn xóa dòng này?")) return;
-
   try {
     const response = await fetch(`https://mytcapp3.nhuhuynhnho254.workers.dev/api/transactions/${id}`, {
       method: "DELETE",

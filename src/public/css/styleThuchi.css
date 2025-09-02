@@ -32,16 +32,16 @@
     width: 50%;
   }
 
-  .input__startingBalance button {
+  .input__startingBalance button,
+  .startingBalance-btn {
     padding: 6px 10px;
-    font-size: 12px;
+    font-size: 10px;
     margin-right: 0;
   }
 
   .deleteRow-btn {
     padding: 3px;
     border-radius: 3px;
-    border: 1px solid #ccc;
     font-size: 10px;
   }
   .startingBalanceTable {
