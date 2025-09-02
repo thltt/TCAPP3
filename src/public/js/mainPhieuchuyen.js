@@ -55,7 +55,7 @@ function renderTable(trips) {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${formattedDate}</td>
-      <td>${t.so_chuyen}</td>
+      <td>${parseInt(t.so_chuyen)}</td>
       <td>${t.cong_ty || ""}</td>
       <td>${t.cung_duong || ""}</td>
       <td>${formattedSoKhoi}</td>
