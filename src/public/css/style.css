@@ -168,7 +168,7 @@ body {
 .export-btn {
   background-color: #da72f4;
   &:hover {
-    background-color: #d042f4;
+    background-color: #d64cf8;
   }
 }
 
