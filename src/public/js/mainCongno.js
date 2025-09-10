@@ -102,12 +102,29 @@ function clearInputs() {
   document.getElementById("transTypeInput").value = "NỢ";
 }
 
-// xuất Excel
-function exportToExcel() {
+// xuất Excel Công nợ
+function exportCongNo() {
+  const toDay = new Date();
+  const toDayString = toDay.toLocaleDateString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
   const table = document.getElementById("transDebtTable");
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.table_to_sheet(table, { raw: true });
 
-  XLSX.utils.book_append_sheet(wb, ws, "Cong_No");
-  XLSX.writeFile(wb, `Cong_No.xlsx`);
+  Object.keys(ws).forEach((cell) => {
+    if (cell[0] === "!") return;
+    const raw = ws[cell].v || "";
+
+    if (typeof raw === "string" && raw.match(/^\d{1,3}(\.\d{3})*$/)) {
+      const numberValue = Number(raw.replace(/\./g, ""));
+      ws[cell].v = numberValue;
+      ws[cell].t = "n";
+    }
+  });
+
+  XLSX.utils.book_append_sheet(wb, ws, "cong_no");
+  XLSX.writeFile(wb, `cong_no_${toDayString}.xlsx`);
 }

@@ -140,8 +140,15 @@ body {
   font-size: 1.2em;
   color: #a407ff;
 }
-.refesh-btn {
-  background-color: #84b5f5;
+.btn-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  column-gap: 1vw;
+}
+
+.btn {
   color: white;
   border: none;
   cursor: pointer;
@@ -150,10 +157,18 @@ body {
   border-radius: 6px;
   font-size: 1rem;
   font-weight: 600px;
-  margin-top: 20px;
-  margin-left: 35vw;
+}
+.refesh-btn {
+  background-color: #84b5f5;
   &:hover {
     background-color: #0e76f6;
+  }
+}
+
+.export-btn {
+  background-color: #da72f4;
+  &:hover {
+    background-color: #d042f4;
   }
 }
 

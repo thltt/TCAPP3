@@ -21,6 +21,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="./src/public/favicon/favIndex/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff" />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <title>Theo dõi Chi Phí</title>
   </head>
   <body>
@@ -32,12 +33,12 @@
         <li><a href="./src/views/thuchi.html">Thu chi</a></li>
       </ul>
       <div class="copyright">
-        <p>version: 1.0 @by thlt</p>
+        <p>version: 1.1 @by thlt</p>
       </div>
     </nav>
 
     <main class="main">
-      <div class="totalTable">
+      <div id="totalTable" class="totalTable">
         <h2>BÁO CÁO TỔNG QUAN</h2>
         <table class="report-table totalPhieuChuyen">
           <tbody>
@@ -50,7 +51,7 @@
               <td class="paid" id="company_payed">0 VNĐ</td>
             </tr>
             <tr>
-              <td>CÒN LẠI:</td>
+              <td>CÔNG TY NỢ CÒN LẠI:</td>
               <td class="remain" id="phieuchuyen_remain">0 VNĐ</td>
             </tr>
           </tbody>
@@ -67,7 +68,7 @@
               <td class="paid" id="debt_payed">0 VNĐ</td>
             </tr>
             <tr>
-              <td>CÒN LẠI:</td>
+              <td>NỢ CÒN LẠI:</td>
               <td class="remain" id="congno_remain">0 VNĐ</td>
             </tr>
           </tbody>
@@ -82,7 +83,10 @@
           </tbody>
         </table>
       </div>
-      <button class="refesh-btn" onclick="location.reload(true)">Làm mới</button>
+      <div class="btn-area">
+        <button class="btn refesh-btn" onclick="location.reload(true)">Làm mới</button>
+        <button class="btn export-btn" onclick="exportAllExcel()">Xuất Excel</button>
+      </div>
     </main>
     <script src="./src/public/js/main.js"></script>
   </body>

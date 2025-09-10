@@ -180,8 +180,14 @@ function clearInputs() {
   document.getElementById("categoryInput").value = "Chi";
 }
 
-// Xuất Excel
-function exportToExcel() {
+// Xuất Excel Thu chi
+function exportThuChi() {
+  const toDay = new Date();
+  const toDayString = toDay.toLocaleDateString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
   const table = document.getElementById("transactionTable");
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.table_to_sheet(table, { raw: true });
@@ -197,8 +203,8 @@ function exportToExcel() {
     }
   });
 
-  XLSX.utils.book_append_sheet(wb, ws, "GiaoDich");
-  XLSX.writeFile(wb, `Thu_Chi.xlsx`);
+  XLSX.utils.book_append_sheet(wb, ws, "Thu_Chi");
+  XLSX.writeFile(wb, `Thu_Chi_${toDayString}.xlsx`);
 }
 
 // Khi load trang

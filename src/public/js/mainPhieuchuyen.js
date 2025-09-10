@@ -149,12 +149,29 @@ function clearInputs() {
   document.getElementById("paidAmountContainer").innerHTML = "";
 }
 
-// Xuất excel
-function exportToExcel() {
+// Xuất excel Phiếu chuyến
+function exportPhieuChuyen() {
+  const toDay = new Date();
+  const toDayString = toDay.toLocaleDateString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
   const table = document.getElementById("transTable");
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.table_to_sheet(table, { raw: true });
 
-  XLSX.utils.book_append_sheet(wb, ws, "Phieu_Chuyen");
-  XLSX.writeFile(wb, `Phieu_Chuyen.xlsx`);
+  Object.keys(ws).forEach((cell) => {
+    if (cell[0] === "!") return;
+    const raw = ws[cell].v || "";
+
+    if (typeof raw === "string" && raw.match(/^\d{1,3}(\.\d{3})*$/)) {
+      const numberValue = Number(raw.replace(/\./g, ""));
+      ws[cell].v = numberValue;
+      ws[cell].t = "n";
+    }
+  });
+
+  XLSX.utils.book_append_sheet(wb, ws, "chieu_chuyen");
+  XLSX.writeFile(wb, `phieu_chuyen_${toDayString}.xlsx`);
 }
